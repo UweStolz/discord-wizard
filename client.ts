@@ -5,6 +5,7 @@ const token = process.env.TOKEN;
 const permissions = process.env.PERMISSIONS;
 const clientID = process.env.CLIENT_ID;
 const publicKes = process.env.PUBLIC_KEY;
+const owlBotToken = process.env.OWLBOT;
 
 let client: Discord.Client;
 
@@ -23,4 +24,7 @@ export async function loginClient(): Promise<void> {
   client.login(token);
 }
 
-export { Discord };
+export {
+  Discord,
+  owlBotToken
+};

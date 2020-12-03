@@ -5,7 +5,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "start": "yarn ts-node index.ts"
+    "start": "yarn ts-node --transpile-only index.ts"
   },
   "dependencies": {
     "axios": "^0.21.0",

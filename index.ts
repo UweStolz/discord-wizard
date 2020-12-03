@@ -1,5 +1,5 @@
 import {
-  Discord, initializeClient, getClient, loginClient,
+  Discord, initializeClient, getClient, loginClient, owlBotToken
 } from './client';
 import { GET } from './request';
 
@@ -12,7 +12,8 @@ const commands = {
   "cat-pic": "Get a random static cat picture",
   "quote": "Get a random quote",
   "insult": "Randomly insult one of the members",
-  "bored": "Find a random activity to fight boredom"
+  "bored": "Find a random activity to fight boredom",
+  "what-is": "Definitions with example sentence and photo if available"
 };
 
 function getHelpMessage(): string {
@@ -36,7 +37,13 @@ async function main(): Promise<void> {
   client.on('message', async (message) => {
     const isValidCommand = message.content.startsWith(commandPrefix);
     if (isValidCommand) {
-      const command = message.content.substr(7).trim();
+      const input = message.content.split(" ");
+      const command = input.length > 0 ? input[1] : null;
+      const argument = input.length > 1 ? input[2] : null;
+
+      if (!command)
+        return;
+      
       switch (command) {
         case 'help':
           const helpMessage = getHelpMessage();
@@ -90,6 +97,34 @@ async function main(): Promise<void> {
           const activity = await GET("https://www.boredapi.com/api/activity/", undefined);
           if (activity) {
             await message.channel.send(`How about..? - ${activity.activity}`);
+          }
+          break;
+        case 'what-is':
+          const owlBotResponse: owlbotResponse = await GET(
+            `https://owlbot.info/api/v4/dictionary/${argument}`,
+            {
+              headers: {
+                "Authorization": `Token ${owlBotToken}`
+              }
+            }
+          );
+          if (owlBotResponse) {
+            const definitionObj = owlBotResponse.definitions[0];
+            const emoji = definitionObj?.emoji;
+            let wordDescription = ""
+
+            wordDescription += definitionObj.definition?.length > 0 ? `Definition: ${definitionObj.definition} ${emoji?emoji:''}\n` : '';
+            wordDescription += definitionObj.type?.length > 0 ? `Type: ${definitionObj.type}\n` : '';
+            wordDescription += definitionObj.example?.length > 0 ? `Example: ${definitionObj.example}\n` : '';
+
+          const embed = new Discord.MessageEmbed({
+            title: owlBotResponse.word,
+            description: wordDescription,
+          });
+            if (definitionObj.image_url?.length > 0) {
+              embed.setImage(definitionObj.image_url);
+            }
+          await  message.channel.send(embed);
           }
           break;
 

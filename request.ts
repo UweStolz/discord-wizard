@@ -1,9 +1,15 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 export async function GET(url: string, options: AxiosRequestConfig | undefined): Promise<any|null> {
     let data = null;
-    const response = await axios.get(url, options)
-    if (response.status == 200) {
+    let response: AxiosResponse<any>|null = null;
+    try {
+        response = await axios.get(url, options)
+    } catch(err) {
+        // Ignore error
+        console.error(err);
+    }
+    if (response?.status == 200) {
         data = response.data;
     }
     return data;
