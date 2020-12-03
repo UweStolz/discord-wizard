@@ -2,15 +2,21 @@ import 'dotenv/config';
 import Discord from 'discord.js';
 
 const token = process.env.TOKEN;
+const permissions = process.env.PERMISSIONS;
+const clientID = process.env.CLIENT_ID;
+const publicKes = process.env.PUBLIC_KEY;
 
 let client: Discord.Client;
 
-export function initializeClient(): void {
+export async function initializeClient(): Promise<void> {
   client = new Discord.Client();
-  client.login(token);
+  await client.login(token);
 }
 
-export function getClient(): Discord.Client {
+export async function getClient(): Promise<Discord.Client> {
+  if (!client) {
+    await initializeClient();
+  }
   return client;
 }
 

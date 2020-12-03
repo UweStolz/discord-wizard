@@ -2,7 +2,7 @@ import { Discord, initializeClient, getClient } from './client';
 
 let client: Discord.Client;
 
-function main() {
-  initializeClient();
-  client = getClient();
+async function main(): Promise<void> {
+  await initializeClient();
+  client = await getClient();
 }
