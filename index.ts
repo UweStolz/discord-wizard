@@ -20,7 +20,12 @@ async function main(): Promise<void> {
       const command = message.content.substr(7).trim();
       switch (command) {
         case 'ping':
+          // Test message
           message.channel.send('pong');
+          break;
+        case 'gotd':
+          // Send Gif of the day
+          // message.channel.send();
           break;
 
         default:
