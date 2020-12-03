@@ -10,7 +10,8 @@ const commands = {
   "ping": "Message to test the connection to the BOT",
   "cat-fact": "Get a random cat fact",
   "cat-pic": "Get a random static cat picture",
-  "quote": "Get a random quote"
+  "quote": "Get a random quote",
+  "insult": "Randomly insult one of the members"
 };
 
 function getHelpMessage(): string {
@@ -67,6 +68,21 @@ async function main(): Promise<void> {
           const quote = await GET("https://ron-swanson-quotes.herokuapp.com/v2/quotes", undefined);
           if (quote.length > 0) {
             await message.channel.send(`Quote: "${quote[0]}"`);
+          }
+          break;
+        case 'insult':
+          const insult = await GET("https://evilinsult.com/generate_insult.php?lang=en&type=json", undefined);
+          if (insult) {
+            const list = client.guilds.cache.get("200274891847499776");
+            const members = list?.members.cache;
+            if (members) {
+              const randomNumber = Math.floor(
+                Math.random() * (members?.size - 1) + 1
+              )
+              const membersArr = members.array();
+              const randomMember = membersArr[randomNumber];
+              await message.channel.send(`${randomMember} ${insult.insult}`);
+            }
           }
           break;
 
