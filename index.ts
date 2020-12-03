@@ -11,7 +11,8 @@ const commands = {
   "cat-fact": "Get a random cat fact",
   "cat-pic": "Get a random static cat picture",
   "quote": "Get a random quote",
-  "insult": "Randomly insult one of the members"
+  "insult": "Randomly insult one of the members",
+  "bored": "Find a random activity to fight boredom"
 };
 
 function getHelpMessage(): string {
@@ -83,6 +84,12 @@ async function main(): Promise<void> {
               const randomMember = membersArr[randomNumber];
               await message.channel.send(`${randomMember} ${insult.insult}`);
             }
+          }
+          break;
+        case 'bored':
+          const activity = await GET("https://www.boredapi.com/api/activity/", undefined);
+          if (activity) {
+            await message.channel.send(`How about..? - ${activity.activity}`);
           }
           break;
 
