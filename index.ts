@@ -9,7 +9,8 @@ let isLoggedIn = false;
 const commands = {
   "ping": "Message to test the connection to the BOT",
   "cat-fact": "Get a random cat fact",
-  "cat-pic": "Get a random static cat picture"
+  "cat-pic": "Get a random static cat picture",
+  "quote": "Get a random quote"
 };
 
 function getHelpMessage(): string {
@@ -44,7 +45,6 @@ async function main(): Promise<void> {
           await  message.channel.send(embed);
           break;
         case 'ping':
-          // Test message
           await message.channel.send('pong');
           break;
         case 'gotd':
@@ -54,13 +54,19 @@ async function main(): Promise<void> {
         case 'cat-fact':
           const catFact = await GET("https://catfact.ninja/fact", undefined);
           if (catFact) {
-            await message.channel.send(`FACT: ${catFact.fact}`);
+            await message.channel.send(`FACT: "${catFact.fact}"`);
           }
           break;
         case 'cat-pic':
           const catPic = await GET("https://aws.random.cat/meow", undefined);
           if (catPic) {
             await message.channel.send(catPic.file);
+          }
+          break;
+        case 'quote':
+          const quote = await GET("https://ron-swanson-quotes.herokuapp.com/v2/quotes", undefined);
+          if (quote.length > 0) {
+            await message.channel.send(`Quote: "${quote[0]}"`);
           }
           break;
 
