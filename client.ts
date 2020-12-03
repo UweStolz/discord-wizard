@@ -10,7 +10,6 @@ let client: Discord.Client;
 
 export async function initializeClient(): Promise<void> {
   client = new Discord.Client();
-  await client.login(token);
 }
 
 export async function getClient(): Promise<Discord.Client> {
@@ -18,6 +17,10 @@ export async function getClient(): Promise<Discord.Client> {
     await initializeClient();
   }
   return client;
+}
+
+export async function loginClient(): Promise<void> {
+  client.login(token);
 }
 
 export { Discord };

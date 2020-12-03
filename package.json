@@ -4,7 +4,9 @@
   "main": "index.ts",
   "private": true,
   "license": "UNLICENSED",
-  "scripts": {},
+  "scripts": {
+    "start": "yarn ts-node index.ts"
+  },
   "dependencies": {
     "axios": "^0.21.0",
     "bufferutil": "^4.0.2",
