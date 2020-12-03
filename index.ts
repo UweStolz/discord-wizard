@@ -13,7 +13,7 @@ const commands = {
   "quote": "Get a random quote",
   "insult": "Randomly insult one of the members",
   "bored": "Find a random activity to fight boredom",
-  "what-is": "Definitions with example sentence and photo if available"
+  "what-is": "<argument> - Definitions with example sentence and photo if available"
 };
 
 function getHelpMessage(): string {
