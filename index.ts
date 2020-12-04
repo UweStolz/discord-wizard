@@ -2,8 +2,8 @@ import {
   Discord, initializeClient, getClient, loginClient, owlBotToken,
 } from './client';
 import request from './request';
-import { publicApis, discordData } from './data';
-import { getHelpMessage, getRandomNumberInRange } from './helper';
+import { publicApis } from './data';
+import utils from './utils';
 
 let client: Discord.Client;
 
@@ -34,7 +34,7 @@ async function main(): Promise<void> {
     if (parsedInput) {
       switch (parsedInput.command) {
         case 'help': {
-          const helpMessage = getHelpMessage();
+          const helpMessage = utils.helper.getHelpMessage();
           const embed = new Discord.MessageEmbed({
             title: 'Helpful help, that really helps...probably',
             description: helpMessage,
@@ -68,15 +68,20 @@ async function main(): Promise<void> {
         }
         case 'insult': {
           const { insult } = await request('GET', publicApis.insult, undefined) || null;
-          if (insult) {
-            const list = client.guilds.cache.get(discordData.serverId);
-            const members = list?.members.cache;
-            if (members) {
-              const randomNumber = getRandomNumberInRange(1, members?.size);
-              const membersArr = members.array();
-              const randomMember = membersArr[randomNumber];
-              await message.channel.send(`${randomMember} ${insult}`);
+          const members = utils.discordHelper.getMemberFromServer(client);
+          if (insult && members) {
+            let member: string | Discord.GuildMember = '';
+            if (parsedInput.argument) {
+              member = parsedInput.argument.startsWith('@') ? parsedInput.argument : `@${parsedInput.argument}`;
+              if (!utils.discordHelper.validateMember(member, members)) {
+                console.warn('Member not in list');
+                return;
+              }
+            } else {
+              const randomNumber = utils.helper.getRandomNumberInRange(1, members.length);
+              member = members[randomNumber];
             }
+            await message.channel.send(`${member} ${insult}`);
           }
           break;
         }
@@ -117,9 +122,11 @@ async function main(): Promise<void> {
           }
           break;
         }
-
-        default:
+        default: {
+          const defaultMessage = "Could not find command, use '/wizard help' to display all available commands.";
+          await message.channel.send(defaultMessage);
           break;
+        }
       }
     }
   });
