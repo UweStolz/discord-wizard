@@ -9,9 +9,9 @@
     "yarn": "1.22.x"
   },
   "scripts": {
+    "build:dev": "yarn run tsc -p ./tsconfig.json",
     "start:dev": "yarn ts-node --transpile-only index.ts",
-    "start": "node index.js",
-    "build": "yarn run tsc -p ./tsconfig.json"
+    "start": "node index.js"
   },
   "dependencies": {
     "axios": "^0.21.0",
