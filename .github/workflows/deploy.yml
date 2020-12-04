@@ -16,7 +16,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: yarn install --frozen-lockfile --production
+    - run: yarn install --frozen-lockfile
     - name: Cache dependencies
       id: yarn-cache-dir-path
       run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -29,11 +29,11 @@ jobs:
           ${{ runner.os }}-yarn-
     - run: yarn build:dev
 
+    # Rmove TS for production
     - run: yarn remove typescript
 
     # Copy files to for deployment
     - run: cp ./package.json ./built/
-    - run: cp ./yarn.lock ./built/
     - run: cp ./Procfile ./built/
   
     - name: Deploy
