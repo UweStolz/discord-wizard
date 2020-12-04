@@ -13,7 +13,9 @@ function parseInput(input: string): ParsedInput {
     argument: null,
   };
   const commandPrefix = '/wizard';
-  const isValidCommand = input.startsWith(commandPrefix);
+  const commandPrefixAlias = '/w';
+
+  const isValidCommand = (input.startsWith(commandPrefix) || input.startsWith(commandPrefixAlias));
   if (isValidCommand) {
     const words = input.split(' ');
     parsedInput.command = words.length > 0 ? words[1] as Command : null;
