@@ -1,7 +1,7 @@
 import {
   Discord, initializeClient, getClient, loginClient, owlBotToken,
 } from './client';
-import { GET } from './request';
+import request from './request';
 
 let client: Discord.Client;
 let isLoggedIn = false;
@@ -61,28 +61,28 @@ async function main(): Promise<void> {
           // message.channel.send();
           break;
         case 'cat-fact': {
-          const catFact = await GET('https://catfact.ninja/fact', undefined);
+          const catFact = await request('GET', 'https://catfact.ninja/fact', undefined);
           if (catFact) {
             await message.channel.send(`FACT: "${catFact.fact}"`);
           }
           break;
         }
         case 'cat-pic': {
-          const catPic = await GET('https://aws.random.cat/meow', undefined);
+          const catPic = await request('GET', 'https://aws.random.cat/meow', undefined);
           if (catPic) {
             await message.channel.send(catPic.file);
           }
           break;
         }
         case 'quote': {
-          const quote = await GET('https://ron-swanson-quotes.herokuapp.com/v2/quotes', undefined);
+          const quote = await request('GET', 'https://ron-swanson-quotes.herokuapp.com/v2/quotes', undefined);
           if (quote.length > 0) {
             await message.channel.send(`Quote: "${quote[0]}"`);
           }
           break;
         }
         case 'insult': {
-          const insult = await GET('https://evilinsult.com/generate_insult.php?lang=en&type=json', undefined);
+          const insult = await request('GET', 'https://evilinsult.com/generate_insult.php?lang=en&type=json', undefined);
           if (insult) {
             const list = client.guilds.cache.get('200274891847499776');
             const members = list?.members.cache;
@@ -98,14 +98,15 @@ async function main(): Promise<void> {
           break;
         }
         case 'bored': {
-          const activity = await GET('https://www.boredapi.com/api/activity/', undefined);
+          const activity = await request('GET', 'https://www.boredapi.com/api/activity/', undefined);
           if (activity) {
             await message.channel.send(`How about..? - ${activity.activity}`);
           }
           break;
         }
         case 'what-is': {
-          const owlBotResponse: owlbotResponse = await GET(
+          const owlBotResponse: owlbotResponse = await request(
+            'GET',
             `https://owlbot.info/api/v4/dictionary/${argument}`,
             {
               headers: {

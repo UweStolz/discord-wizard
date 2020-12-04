@@ -1,5 +1,5 @@
 
-name: Install, build and deploy to heroku
+name: Install, build and deploy to "build" branch
 
 on:
   push:
@@ -31,14 +31,10 @@ jobs:
 
     - run: cp ./package.json ./built/
   
-    - name: Deploy to Heroku
-      uses: AkhileshNS/heroku-deploy@v3.6.8
-      with:
-        # This will be used for authentication. You can find it in your heroku homepage account settings
-        heroku_api_key: ${{ secrets.HEROKU_API_KEY }} 
-        # Email that you use with heroku
-        heroku_email: ${{ secrets.HEROKU_EMAIL }}
-        # The appname to use for deploying/updating
-        heroku_app_name: discord--wizard
-        # The branch that you would like to deploy to Heroku
-        appdir: built
+    - name: Deploy
+      uses: s0/git-publish-subdir-action@develop
+      env:
+        REPO: git@github.com:UweStolz/discord.git
+        BRANCH: build
+        FOLDER: built
+        SSH_PRIVATE_KEY: ${{ secrets.build_heroku_deploy_key }}
