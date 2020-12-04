@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import logger from './logger';
 
 type RequestType = 'GET' | 'POST';
 
@@ -10,7 +11,7 @@ async function GET(url: string, options: AxiosRequestConfig | undefined): Promis
     response = await axios.get(url, options);
   } catch (err) {
     // Ignore error
-    console.error(err);
+    logger.error(err);
   }
   if (response?.status === 200) {
     data = response.data;

@@ -16,7 +16,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: yarn install --frozen-lockfile
+    - run: yarn install --frozen-lockfile --production
     - name: Cache dependencies
       id: yarn-cache-dir-path
       run: echo "::set-output name=dir::$(yarn cache dir)"
