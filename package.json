@@ -6,6 +6,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "start:dev": "yarn ts-node --transpile-only index.ts",
+    "start": "node index.js",
     "build": "yarn run tsc -p ./tsconfig.json"
   },
   "dependencies": {
