@@ -1,3 +1,4 @@
+import logger from './logger';
 import {
   Discord, initializeClient, getClient, loginClient, owlBotToken,
 } from './client';
@@ -82,7 +83,7 @@ async function main(): Promise<void> {
               if (validatedMember) {
                 member = validatedMember;
               } else {
-                console.warn('Member not in list');
+                logger.warn('Member not in list');
                 return;
               }
             } else if ((members.length) === 1) {
@@ -92,7 +93,6 @@ async function main(): Promise<void> {
               const randomNumber = utils.helper.getRandomNumberInRange(1, members.length - 1);
               member = members[randomNumber];
             }
-            console.log(members.length);
             await message.channel.send(`${member} ${utf8ConvertedInsult}`);
           }
           break;
