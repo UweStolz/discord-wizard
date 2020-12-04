@@ -2,19 +2,11 @@ import {
   Discord, initializeClient, getClient, loginClient, owlBotToken,
 } from './client';
 import request from './request';
-import { commands, publicApis } from './data';
+import { publicApis } from './data';
+import { getHelpMessage, getRandomNumberInRange } from './helper';
 
 let client: Discord.Client;
 let isLoggedIn = false;
-
-function getHelpMessage(): string {
-  let message = '';
-  const descriptions = Object.values(commands);
-  Object.keys(commands).forEach((command: string, index: number) => {
-    message += `${command}: ${descriptions[index]} \n`;
-  });
-  return message;
-}
 
 async function main(): Promise<void> {
   const commandPrefix = '/wizard';
@@ -78,9 +70,7 @@ async function main(): Promise<void> {
             const list = client.guilds.cache.get('200274891847499776');
             const members = list?.members.cache;
             if (members) {
-              const randomNumber = Math.floor(
-                Math.random() * (members?.size - 1) + 1,
-              );
+              const randomNumber = getRandomNumberInRange(1, members?.size);
               const membersArr = members.array();
               const randomMember = membersArr[randomNumber];
               await message.channel.send(`${randomMember} ${insult.insult}`);
