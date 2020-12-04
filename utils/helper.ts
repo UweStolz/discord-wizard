@@ -1,4 +1,4 @@
-import { commands } from './data';
+import { commands } from '../data';
 
 export function getHelpMessage(): string {
   let message = '';

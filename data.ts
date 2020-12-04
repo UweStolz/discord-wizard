@@ -1,4 +1,5 @@
 const commands = {
+  help: 'Display all available commands',
   ping: 'Message to test the connection to the BOT',
   'cat-fact': 'Get a random cat fact',
   'cat-pic': 'Get a random static cat picture',
