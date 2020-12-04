@@ -1,8 +1,6 @@
-name: Install, build and deploy to heroku
+name: Install and build
 
 on:
-  push:
-    branches: [ heroku ]  
   pull_request_target:
     branches: [ heroku ]
 jobs:
