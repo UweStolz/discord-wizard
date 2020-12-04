@@ -7,7 +7,7 @@ import utils from './utils';
 
 let client: Discord.Client;
 
-function parseInput(input: string) {
+function parseInput(input: string): ParsedInput {
   const parsedInput: ParsedInput = {
     command: null,
     argument: null,
@@ -16,8 +16,8 @@ function parseInput(input: string) {
   const isValidCommand = input.startsWith(commandPrefix);
   if (isValidCommand) {
     const words = input.split(' ');
-    parsedInput.command = words.length > 0 ? input[1] as Commands : null;
-    parsedInput.argument = words.length > 1 ? input[2] : null;
+    parsedInput.command = words.length > 0 ? words[1] as Command : null;
+    parsedInput.argument = words.length > 1 ? words[2] : null;
   }
   return parsedInput;
 }
@@ -31,7 +31,7 @@ async function main(): Promise<void> {
 
   client.on('message', async (message) => {
     const parsedInput = parseInput(message.content);
-    if (parsedInput) {
+    if (parsedInput.command) {
       switch (parsedInput.command) {
         case 'help': {
           const helpMessage = utils.helper.getHelpMessage();

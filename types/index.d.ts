@@ -12,7 +12,7 @@ interface owlbotResponse {
       'pronunciation': string
 }
 
-type Commands =
+type Command =
   'help' |
   'ping' |
   'cat-fact'|
@@ -24,6 +24,6 @@ type Commands =
 ;
 
 interface ParsedInput {
-    command: Commands | null,
+    command: Command | null,
     argument: string | null,
 }
