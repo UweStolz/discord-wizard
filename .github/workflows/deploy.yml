@@ -37,4 +37,4 @@ jobs:
         REPO: git@github.com:UweStolz/discord.git
         BRANCH: build
         FOLDER: built
-        SSH_PRIVATE_KEY: ${{ secrets.build_heroku_deploy_key }}
+        SSH_PRIVATE_KEY: ${{ secrets.BUILD_HEROKU_DEPLOY_KEY }}
