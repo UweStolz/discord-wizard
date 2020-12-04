@@ -6,27 +6,33 @@ import { publicApis, discordData } from './data';
 import { getHelpMessage, getRandomNumberInRange } from './helper';
 
 let client: Discord.Client;
-let isLoggedIn = false;
+
+function parseInput(input: string) {
+  const parsedInput: ParsedInput = {
+    command: null,
+    argument: null,
+  };
+  const commandPrefix = '/wizard';
+  const isValidCommand = input.startsWith(commandPrefix);
+  if (isValidCommand) {
+    const words = input.split(' ');
+    parsedInput.command = words.length > 0 ? input[1] as Commands : null;
+    parsedInput.argument = words.length > 1 ? input[2] : null;
+  }
+  return parsedInput;
+}
 
 async function main(): Promise<void> {
-  const commandPrefix = '/wizard';
   await initializeClient();
   client = await getClient();
   client.on('ready', () => {
     console.log('Ready');
-    isLoggedIn = true;
   });
 
   client.on('message', async (message) => {
-    const isValidCommand = message.content.startsWith(commandPrefix);
-    if (isValidCommand) {
-      const input = message.content.split(' ');
-      const command = input.length > 0 ? input[1] : null;
-      const argument = input.length > 1 ? input[2] : null;
-
-      if (!command) { return; }
-
-      switch (command) {
+    const parsedInput = parseInput(message.content);
+    if (parsedInput) {
+      switch (parsedInput.command) {
         case 'help': {
           const helpMessage = getHelpMessage();
           const embed = new Discord.MessageEmbed({
@@ -38,10 +44,6 @@ async function main(): Promise<void> {
         }
         case 'ping':
           await message.channel.send('pong');
-          break;
-        case 'gotd':
-          // Send Gif of the day
-          // message.channel.send();
           break;
         case 'cat-fact': {
           const catFact = await request('GET', publicApis.catFact, undefined);
@@ -88,7 +90,7 @@ async function main(): Promise<void> {
         case 'what-is': {
           const owlBotResponse: owlbotResponse = await request(
             'GET',
-            `${publicApis.owlbot}${argument}`,
+            `${publicApis.owlbot}${parsedInput.argument}`,
             {
               headers: {
                 Authorization: `Token ${owlBotToken}`,
