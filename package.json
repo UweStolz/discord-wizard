@@ -4,6 +4,10 @@
   "main": "index.js",
   "private": true,
   "license": "UNLICENSED",
+  "engines": {
+    "node": "14.15.x",
+    "yarn": "1.22.x"
+  },
   "scripts": {
     "start:dev": "yarn ts-node --transpile-only index.ts",
     "start": "node index.js",
