@@ -29,6 +29,9 @@ jobs:
           ${{ runner.os }}-yarn-
     - run: yarn build:dev
 
+    - run: yarn remove typescript
+
+    # Copy files to for deployment
     - run: cp ./package.json ./built/
     - run: cp ./yarn.lock ./built/
     - run: cp ./Procfile ./built/
