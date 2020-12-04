@@ -27,6 +27,6 @@
         "node_modules",
         "built",
         "coverage",
-        "types.ts"
+        "types"
     ]
 }
