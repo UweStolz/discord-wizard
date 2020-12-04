@@ -80,7 +80,7 @@ async function main(): Promise<void> {
                 return;
               }
             } else {
-              const randomNumber = utils.helper.getRandomNumberInRange(1, members.length);
+              const randomNumber = utils.helper.getRandomNumberInRange(1, members.length - 1);
               member = members[randomNumber];
             }
             await message.channel.send(`${member} ${insult}`);
