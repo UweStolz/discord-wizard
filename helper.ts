@@ -11,7 +11,7 @@ export function getHelpMessage(): string {
 
 export function getRandomNumberInRange(min: number, max: number): number {
   const randomNumber = Math.floor(
-    Math.random() * (max - min) + min,
+    Math.random() * (max - min + 1) + min,
   );
   return randomNumber;
 }
