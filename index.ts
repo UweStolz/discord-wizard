@@ -70,20 +70,30 @@ async function main(): Promise<void> {
         }
         case 'insult': {
           const { insult } = await request('GET', publicApis.insult, undefined) || null;
-          const members = utils.discordHelper.getMemberFromServer(client);
-          if (insult && members) {
-            let member: string | Discord.GuildMember = '';
+          const allMembers = utils.discordHelper.getMemberFromServer(client);
+
+          if (insult && allMembers) {
+            const members = allMembers?.filter((m) => (m.displayName !== 'wizard'));
+            const utf8ConvertedInsult = Buffer.from(insult, 'utf-8');
+
+            let member: Discord.GuildMember;
             if (parsedInput.argument) {
-              member = parsedInput.argument.startsWith('@') ? parsedInput.argument : `@${parsedInput.argument}`;
-              if (!utils.discordHelper.validateMember(member, members)) {
+              const validatedMember = utils.discordHelper.validateMember(parsedInput.argument, members);
+              if (validatedMember) {
+                member = validatedMember;
+              } else {
                 console.warn('Member not in list');
                 return;
               }
+            } else if ((members.length) === 1) {
+              // eslint-disable-next-line prefer-destructuring
+              member = members[0];
             } else {
               const randomNumber = utils.helper.getRandomNumberInRange(1, members.length - 1);
               member = members[randomNumber];
             }
-            await message.channel.send(`${member} ${insult}`);
+            console.log(members.length);
+            await message.channel.send(`${member} ${utf8ConvertedInsult}`);
           }
           break;
         }

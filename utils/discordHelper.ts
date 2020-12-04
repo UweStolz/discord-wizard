@@ -11,6 +11,7 @@ export function getMemberFromServer(client: Discord.Client): Discord.GuildMember
   return membersArr;
 }
 
-export function validateMember(member: string, memberList: Discord.GuildMember[]): boolean {
-  return !!memberList.find((m) => (m.toString() === member));
+export function validateMember(member: string, memberList: Discord.GuildMember[]): Discord.GuildMember|undefined {
+  const displayNameOfMember = member.startsWith('@') ? member.substr(1) : member;
+  return memberList.find((m) => ((m.displayName === displayNameOfMember || m.nickname === displayNameOfMember)));
 }
