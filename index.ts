@@ -2,7 +2,7 @@ import {
   Discord, initializeClient, getClient, loginClient, owlBotToken,
 } from './client';
 import request from './request';
-import { publicApis } from './data';
+import { publicApis, discordData } from './data';
 import { getHelpMessage, getRandomNumberInRange } from './helper';
 
 let client: Discord.Client;
@@ -65,23 +65,23 @@ async function main(): Promise<void> {
           break;
         }
         case 'insult': {
-          const insult = await request('GET', publicApis.insult, undefined);
+          const { insult } = await request('GET', publicApis.insult, undefined) || null;
           if (insult) {
-            const list = client.guilds.cache.get('200274891847499776');
+            const list = client.guilds.cache.get(discordData.serverId);
             const members = list?.members.cache;
             if (members) {
               const randomNumber = getRandomNumberInRange(1, members?.size);
               const membersArr = members.array();
               const randomMember = membersArr[randomNumber];
-              await message.channel.send(`${randomMember} ${insult.insult}`);
+              await message.channel.send(`${randomMember} ${insult}`);
             }
           }
           break;
         }
         case 'bored': {
-          const activity = await request('GET', publicApis.bored, undefined);
+          const { activity } = await request('GET', publicApis.bored, undefined) || null;
           if (activity) {
-            await message.channel.send(`How about..? - ${activity.activity}`);
+            await message.channel.send(`How about..? - ${activity}`);
           }
           break;
         }

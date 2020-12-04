@@ -19,7 +19,12 @@ const publicApis = {
   ],
 };
 
+const discordData = {
+  serverId: '200274891847499776',
+};
+
 export {
   commands,
   publicApis,
+  discordData,
 };
