@@ -12,6 +12,10 @@
         "esModuleInterop": true,
         "emitDecoratorMetadata": true,
         "allowSyntheticDefaultImports": true,
+        "types": [
+            "node_modules/@types",
+            "types.ts"
+        ],
         "outDir": "built",
         "lib": [
             "ES2020",
@@ -26,6 +30,7 @@
     "exclude": [
         "node_modules",
         "built",
-        "coverage"
+        "coverage",
+        "types.ts"
     ]
 }
