@@ -22,7 +22,6 @@ module.exports = {
   rules: {
     '@typescript-eslint/ban-ts-ignore': 'off',
     'max-len': [0, { code: 100, ignoreStrings: true }],
-    'no-console': 'off',
     'import/extensions': [
       'error',
       'ignorePackages',

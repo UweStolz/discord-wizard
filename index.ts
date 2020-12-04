@@ -29,7 +29,7 @@ async function main(): Promise<void> {
   await initializeClient();
   client = await getClient();
   client.on('ready', () => {
-    console.log('Ready');
+    logger.info('Ready');
   });
 
   client.on('message', async (message) => {
