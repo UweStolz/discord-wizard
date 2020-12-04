@@ -2,50 +2,39 @@ import {
   Discord, initializeClient, getClient, loginClient, owlBotToken,
 } from './client';
 import request from './request';
+import { publicApis } from './data';
+import utils from './utils';
 
 let client: Discord.Client;
-let isLoggedIn = false;
 
-const commands = {
-  ping: 'Message to test the connection to the BOT',
-  'cat-fact': 'Get a random cat fact',
-  'cat-pic': 'Get a random static cat picture',
-  quote: 'Get a random quote',
-  insult: 'Randomly insult one of the members',
-  bored: 'Find a random activity to fight boredom',
-  'what-is': '<argument> - Definitions with example sentence and photo if available',
-};
-
-function getHelpMessage(): string {
-  let message = '';
-  const descriptions = Object.values(commands);
-  Object.keys(commands).forEach((command: string, index: number) => {
-    message += `${command}: ${descriptions[index]} \n`;
-  });
-  return message;
+function parseInput(input: string) {
+  const parsedInput: ParsedInput = {
+    command: null,
+    argument: null,
+  };
+  const commandPrefix = '/wizard';
+  const isValidCommand = input.startsWith(commandPrefix);
+  if (isValidCommand) {
+    const words = input.split(' ');
+    parsedInput.command = words.length > 0 ? input[1] as Commands : null;
+    parsedInput.argument = words.length > 1 ? input[2] : null;
+  }
+  return parsedInput;
 }
 
 async function main(): Promise<void> {
-  const commandPrefix = '/wizard';
   await initializeClient();
   client = await getClient();
   client.on('ready', () => {
     console.log('Ready');
-    isLoggedIn = true;
   });
 
   client.on('message', async (message) => {
-    const isValidCommand = message.content.startsWith(commandPrefix);
-    if (isValidCommand) {
-      const input = message.content.split(' ');
-      const command = input.length > 0 ? input[1] : null;
-      const argument = input.length > 1 ? input[2] : null;
-
-      if (!command) { return; }
-
-      switch (command) {
+    const parsedInput = parseInput(message.content);
+    if (parsedInput) {
+      switch (parsedInput.command) {
         case 'help': {
-          const helpMessage = getHelpMessage();
+          const helpMessage = utils.helper.getHelpMessage();
           const embed = new Discord.MessageEmbed({
             title: 'Helpful help, that really helps...probably',
             description: helpMessage,
@@ -56,58 +45,57 @@ async function main(): Promise<void> {
         case 'ping':
           await message.channel.send('pong');
           break;
-        case 'gotd':
-          // Send Gif of the day
-          // message.channel.send();
-          break;
         case 'cat-fact': {
-          const catFact = await request('GET', 'https://catfact.ninja/fact', undefined);
+          const catFact = await request('GET', publicApis.catFact, undefined);
           if (catFact) {
             await message.channel.send(`FACT: "${catFact.fact}"`);
           }
           break;
         }
         case 'cat-pic': {
-          const catPic = await request('GET', 'https://aws.random.cat/meow', undefined);
+          const catPic = await request('GET', publicApis.catPic, undefined);
           if (catPic) {
             await message.channel.send(catPic.file);
           }
           break;
         }
         case 'quote': {
-          const quote = await request('GET', 'https://ron-swanson-quotes.herokuapp.com/v2/quotes', undefined);
+          const quote = await request('GET', publicApis.quotes[0], undefined);
           if (quote.length > 0) {
             await message.channel.send(`Quote: "${quote[0]}"`);
           }
           break;
         }
         case 'insult': {
-          const insult = await request('GET', 'https://evilinsult.com/generate_insult.php?lang=en&type=json', undefined);
-          if (insult) {
-            const list = client.guilds.cache.get('200274891847499776');
-            const members = list?.members.cache;
-            if (members) {
-              const randomNumber = Math.floor(
-                Math.random() * (members?.size - 1) + 1,
-              );
-              const membersArr = members.array();
-              const randomMember = membersArr[randomNumber];
-              await message.channel.send(`${randomMember} ${insult.insult}`);
+          const { insult } = await request('GET', publicApis.insult, undefined) || null;
+          const members = utils.discordHelper.getMemberFromServer(client);
+          if (insult && members) {
+            let member: string | Discord.GuildMember = '';
+            if (parsedInput.argument) {
+              member = parsedInput.argument.startsWith('@') ? parsedInput.argument : `@${parsedInput.argument}`;
+              if (!utils.discordHelper.validateMember(member, members)) {
+                console.warn('Member not in list');
+                return;
+              }
+            } else {
+              const randomNumber = utils.helper.getRandomNumberInRange(1, members.length);
+              member = members[randomNumber];
             }
+            await message.channel.send(`${member} ${insult}`);
           }
           break;
         }
         case 'bored': {
-          const activity = await request('GET', 'https://www.boredapi.com/api/activity/', undefined);
+          const { activity } = await request('GET', publicApis.bored, undefined) || null;
           if (activity) {
-            await message.channel.send(`How about..? - ${activity.activity}`);
+            await message.channel.send(`How about..? - ${activity}`);
           }
           break;
         }
         case 'what-is': {
           const owlBotResponse: owlbotResponse = await request(
             'GET',
-            `https://owlbot.info/api/v4/dictionary/${argument}`,
+            `${publicApis.owlbot}${parsedInput.argument}`,
             {
               headers: {
                 Authorization: `Token ${owlBotToken}`,
@@ -134,9 +122,11 @@ async function main(): Promise<void> {
           }
           break;
         }
-
-        default:
+        default: {
+          const defaultMessage = "Could not find command, use '/wizard help' to display all available commands.";
+          await message.channel.send(defaultMessage);
           break;
+        }
       }
     }
   });
