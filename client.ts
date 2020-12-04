@@ -26,5 +26,5 @@ export async function loginClient(): Promise<void> {
 
 export {
   Discord,
-  owlBotToken
+  owlBotToken,
 };

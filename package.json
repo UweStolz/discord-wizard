@@ -5,7 +5,9 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "start": "yarn ts-node --transpile-only index.ts"
+    "start:dev": "yarn ts-node --transpile-only index.ts",
+    "start": "node index.js",
+    "build": "yarn run tsc -p ./tsconfig.build.json"
   },
   "dependencies": {
     "axios": "^0.21.0",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "@types/node": "^14.14.3",
+    "@types/ws": "^7.4.0",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "@typescript-eslint/parser": "^4.5.0",
     "eslint": "^7.12.0",
