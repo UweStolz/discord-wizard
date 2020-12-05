@@ -45,16 +45,20 @@ async function initializeTables(): Promise<void> {
 
   for (let i = 0; i < schemata.length; i += 1) {
     const schema = schemata[i];
-    let q = `${schema.columns[i]} ${schema.datatypes[i]}`;
-    if (i !== schemata.length - 1) {
-      q += ',';
+    let q = '';
+    for (let index = 0; index < schema.columns.length; index += 1) {
+      q += `${schema.columns[index]} ${schema.datatypes[index]}`;
+      if (index !== schema.columns.length - 1) {
+        q += ', ';
+      }
     }
     tableQueries.push(q);
   }
 
   // eslint-disable-next-line no-restricted-syntax
-  for await (const [index, schema] of schemata.entries()) {
-    await query(`CREATE TABLE IF NOT EXIST ${schema.table}(${tableQueries[index]});`);
+  for await (const [index, tableQuery] of tableQueries.entries()) {
+    const q = `CREATE TABLE IF NOT EXIST ${schemata[index].table}(${tableQuery});`;
+    await query(q);
   }
   logger.info('Tables successfully initialized');
 }
