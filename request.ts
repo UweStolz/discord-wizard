@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import logger from './logger';
+import logger, { objLogger } from './logger';
 
 type RequestType = 'GET' | 'POST';
 
@@ -38,7 +38,7 @@ export default async function request(type: RequestType, url: string, options: A
     }
   } catch (err) {
     logger.error('An error ocurred while making a request!');
-    logger.error(err);
+    objLogger.error(err);
   }
   return response;
 }

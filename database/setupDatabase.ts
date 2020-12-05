@@ -3,7 +3,7 @@ import { Pool, QueryResult } from 'pg';
 import { env } from '../data';
 import schemata from './schemata';
 import listener from './listener';
-import logger from '../logger';
+import logger, { objLogger } from '../logger';
 
 let pool: Pool;
 
@@ -30,7 +30,7 @@ export async function query(queryStream: string): Promise<QueryResult<any> | nul
   } catch (err) {
     logger.error('An error ocurred while executing the query:');
     logger.error(queryStream);
-    logger.error(err);
+    objLogger.error(err);
   } finally {
     await pool.end();
   }
@@ -64,7 +64,7 @@ export default async function setupDatabase(): Promise<Pool> {
     await initializeTables();
   } catch (err) {
     logger.error('Could not initialize database!');
-    logger.error(err);
+    objLogger.error(err);
   }
   return pool;
 }
