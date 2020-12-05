@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Pool, Query, QueryResult } from 'pg';
+import { Pool, QueryResult } from 'pg';
 import { env } from '../data';
 import schemata from './schemata';
 import listener from './listener';
@@ -58,7 +58,13 @@ async function initializeTables(): Promise<void> {
 }
 
 export default async function setupDatabase(): Promise<Pool> {
-  await startDatabaseClient();
-  await initializeTables();
+  try {
+    logger.info('Start database initialization');
+    await startDatabaseClient();
+    await initializeTables();
+  } catch (err) {
+    logger.error('Could not initialize database!');
+    logger.error(err);
+  }
   return pool;
 }

@@ -4,6 +4,7 @@ import {
 } from './client';
 import * as handler from './handler';
 import parser from './parser';
+import './database';
 
 let client: Discord.Client;
 
