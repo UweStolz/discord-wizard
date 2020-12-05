@@ -9,9 +9,13 @@ let client: Discord.Client;
 
 function startListener(): void {
   client.on('message', async (message) => {
-    const parsedInput = parser(message.content);
-    if (parsedInput.command) {
-      switch (parsedInput.command) {
+    const { command, argument } = parser(message.content);
+    if (command) {
+      logger.info(`Command: ${command}`);
+      if (argument) {
+        logger.info(`Argument: ${argument}`);
+      }
+      switch (command) {
         case 'help': {
           await handler.help(message);
           break;
@@ -32,7 +36,7 @@ function startListener(): void {
           break;
         }
         case 'insult': {
-          await handler.insult(message, client, parsedInput.argument);
+          await handler.insult(message, client, argument);
           break;
         }
         case 'bored': {
@@ -40,7 +44,7 @@ function startListener(): void {
           break;
         }
         case 'what-is': {
-          await handler.whatIs(message, parsedInput.argument);
+          await handler.whatIs(message, argument);
           break;
         }
         default: {
