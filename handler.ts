@@ -2,8 +2,16 @@ import { Discord } from './client';
 import utils from './utils';
 import { publicApis, env } from './data';
 import request from './request';
-import { query } from './database';
 import logger from './logger';
+
+export async function stats(message: Discord.Message): Promise<void> {
+  const statistics: string = await utils.dbHelper.getStatistics();
+  const embed = new Discord.MessageEmbed({
+    title: 'Statistics',
+    description: statistics,
+  });
+  await message.channel.send(embed);
+}
 
 export async function help(message: Discord.Message): Promise<void> {
   const helpMessage = utils.helper.getHelpMessage();
@@ -16,7 +24,7 @@ export async function help(message: Discord.Message): Promise<void> {
 
 export async function ping(message: Discord.Message): Promise<void> {
   await message.channel.send('pong');
-  // await query(queryStream);
+  await utils.dbHelper.updateStatForColumn('ping');
 }
 
 export async function catFact(message: Discord.Message): Promise<void> {
@@ -108,4 +116,13 @@ export async function whatIs(message: Discord.Message, argument: string|null = n
 export async function defaultHandler(message: Discord.Message): Promise<void> {
   const defaultMessage = "Could not find command, use '/wizard help' to display all available commands.";
   await message.channel.send(defaultMessage);
+}
+
+// TODO
+const handlerMapping = {
+  stats: async (message: Discord.Message) => stats(message),
+};
+
+export default async function handleMessage(command: Command, message: Discord.Message) {
+  await utils.dbHelper.updateStatForColumn('ping');
 }

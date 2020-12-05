@@ -17,6 +17,10 @@ function startListener(): void {
         logger.info(`Argument: ${argument}`);
       }
       switch (command) {
+        case 'stats': {
+          await handler.stats(message);
+          break;
+        }
         case 'help': {
           await handler.help(message);
           break;

@@ -1,5 +1,6 @@
 import { getMemberFromServer, validateMember } from './discordHelper';
 import { getHelpMessage, getRandomNumberInRange } from './helper';
+import { getStatistics, updateStatForColumn } from './dbHelper';
 
 const utils = {
   helper: {
@@ -9,6 +10,10 @@ const utils = {
   discordHelper: {
     getMemberFromServer,
     validateMember,
+  },
+  dbHelper: {
+    getStatistics,
+    updateStatForColumn,
   },
 };
 

@@ -13,6 +13,7 @@ interface owlbotResponse {
 }
 
 type Command =
+  'stats' |
   'help' |
   'ping' |
   'cat-fact'|
