@@ -62,7 +62,7 @@ async function initializeTables(): Promise<void> {
   // eslint-disable-next-line no-restricted-syntax
   for await (const [index, tableQuery] of tableQueries.entries()) {
     const q = `CREATE TABLE IF NOT EXISTS ${schemata[index].table}(${tableQuery})`;
-    const cleanedQuery = q.replace('-', '_');
+    const cleanedQuery = q.replace(/-/gi, '_');
     await query(cleanedQuery);
   }
   logger.info('Tables successfully initialized');
