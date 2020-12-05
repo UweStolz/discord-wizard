@@ -4,7 +4,7 @@ import logger, { objLogger } from '../logger';
 export default function listener(pool: Pool): void {
   pool.on('connect', (client: PoolClient) => {
     logger.info('Database connected, client:');
-    objLogger.info(client);
+    objLogger.debug(client);
   });
   pool.on('acquire', (client: PoolClient) => {
     logger.info('Database checked out client:');
@@ -17,6 +17,6 @@ export default function listener(pool: Pool): void {
   });
   pool.on('remove', (client: PoolClient) => {
     logger.info('Database closed and removed client');
-    objLogger.info(`Client: ${client}`);
+    objLogger.debug(client);
   });
 }
