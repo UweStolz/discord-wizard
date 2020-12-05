@@ -1,0 +1,61 @@
+import { Pool, Query } from 'pg';
+import { env } from '../data';
+import schemata from './schemata';
+import listener from './listener';
+import logger from '../logger';
+
+let pool: Pool;
+
+async function startDatabaseClient(): Promise<void> {
+  if (!pool) {
+    pool = new Pool({
+      application_name: 'Discord - Wizard',
+      connectionString: env.dataBaseUrl,
+      keepAlive: true,
+      user: 'root',
+      database: 'wizard',
+    });
+  }
+  listener(pool);
+  await pool.connect();
+}
+
+export async function query<T extends Query>(queryStream: T): Promise<T | null> {
+  let res: T| null = null;
+  try {
+    res = await pool.query(queryStream);
+    logger.info('Query successfully executed:');
+    logger.info(queryStream);
+  } catch (err) {
+    logger.error('An error ocurred while executing the query:');
+    logger.error(queryStream);
+    logger.error(err);
+  } finally {
+    await pool.end();
+  }
+  return res;
+}
+
+async function initializeTables(): Promise<void> {
+  const tableQueries = [];
+
+  for (let i = 0; i < schemata.length; i += 1) {
+    const schema = schemata[i];
+    let q = `${schema.columns[i]} ${schema.datatypes[i]}`;
+    if (i !== schemata.length - 1) {
+      q += ',';
+    }
+    tableQueries.push(q);
+  }
+
+  // eslint-disable-next-line no-restricted-syntax
+  for await (const [index, schema] of schemata.entries()) {
+    await pool.query(`CREATE TABLE IF NOT EXIST ${schema.table}(${tableQueries[index]});`);
+  }
+}
+
+export default async function setupDatabase(): Promise<Pool> {
+  await startDatabaseClient();
+  await initializeTables();
+  return pool;
+}

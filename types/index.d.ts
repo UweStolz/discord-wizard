@@ -27,3 +27,9 @@ interface ParsedInput {
     command: Command | null,
     argument: string | null,
 }
+
+interface Schema {
+  table: string;
+  columns: string[];
+  datatypes: string[];
+}

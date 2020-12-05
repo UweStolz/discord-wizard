@@ -2,6 +2,7 @@ import { Discord } from './client';
 import utils from './utils';
 import { publicApis, env } from './data';
 import request from './request';
+import { query } from './database';
 import logger from './logger';
 
 export async function help(message: Discord.Message): Promise<void> {
@@ -15,6 +16,7 @@ export async function help(message: Discord.Message): Promise<void> {
 
 export async function ping(message: Discord.Message): Promise<void> {
   await message.channel.send('pong');
+  // await query(queryStream);
 }
 
 export async function catFact(message: Discord.Message): Promise<void> {
