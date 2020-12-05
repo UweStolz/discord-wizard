@@ -11,10 +11,12 @@ async function startDatabaseClient(): Promise<void> {
   if (!pool) {
     pool = new Pool({
       application_name: 'Discord - Wizard',
-      connectionString: env.dataBaseUrl,
+      connectionString: env.db.dataBaseUrl,
+      user: env.db.user,
+      database: env.db.database,
+      password: env.db.password,
+      port: typeof env.db.port === 'string' ? parseInt(env.db.port as string, 10) : env.db.port,
       keepAlive: true,
-      user: 'root',
-      database: 'wizard',
     });
   }
   listener(pool);
