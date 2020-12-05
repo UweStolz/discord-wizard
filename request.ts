@@ -4,36 +4,41 @@ import logger from './logger';
 
 type RequestType = 'GET' | 'POST';
 
-async function GET(url: string, options: AxiosRequestConfig | undefined): Promise<any|null> {
-  let data = null;
-  let response: AxiosResponse<any>|null = null;
-  try {
-    response = await axios.get(url, options);
-  } catch (err) {
-    // Ignore error
-    logger.error(err);
-  }
+function getResponseData(response: AxiosResponse<any>): AxiosResponse<any>|null {
+  let data: AxiosResponse<any>|null = null;
   if (response?.status === 200) {
     data = response.data;
   }
   return data;
 }
 
-async function POST(url: string, options: AxiosRequestConfig | undefined): Promise<any | null> {
-  //
+async function GET(url: string, options: AxiosRequestConfig | undefined): Promise<any|null> {
+  const response = await axios.get(url, options);
+  return getResponseData(response);
 }
 
-export default async function request(type: RequestType, url: string, options: AxiosRequestConfig | undefined = undefined): Promise<any|null> {
+async function POST(url: string, options: AxiosRequestConfig | undefined): Promise<any | null> {
+  const response = await axios.post(url, options);
+  return getResponseData(response);
+}
+
+export default async function request(type: RequestType, url: string, options: AxiosRequestConfig | undefined = undefined): Promise<any | null> {
   let response: AxiosResponse<any>|null = null;
-  switch (type) {
-    case 'GET':
-      response = await GET(url, options);
-      break;
-    case 'POST':
-      response = await POST(url, options);
-      break;
-    default:
-      break;
+  try {
+    switch (type) {
+      case 'GET':
+        response = await GET(url, options);
+        break;
+      case 'POST':
+        response = await POST(url, options);
+        break;
+      default:
+        logger.warn('No matching request method found!');
+        break;
+    }
+  } catch (err) {
+    logger.error('An error ocurred while making a request!');
+    logger.error(err);
   }
   return response;
 }
