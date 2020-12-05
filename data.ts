@@ -1,10 +1,12 @@
+import * as env from './env';
+
 const commands = {
   help: 'Display all available commands',
   ping: 'Message to test the connection to the BOT',
   'cat-fact': 'Get a random cat fact',
   'cat-pic': 'Get a random static cat picture',
   quote: 'Get a random quote',
-  insult: 'Randomly insult one of the members',
+  insult: '[argument] - Insult one of the members, either randomly or targeted',
   bored: 'Find a random activity to fight boredom',
   'what-is': '<argument> - Definitions with example sentence and photo if available',
 };
@@ -20,12 +22,8 @@ const publicApis = {
   ],
 };
 
-const discordData = {
-  serverId: '200274891847499776',
-};
-
 export {
+  env,
   commands,
   publicApis,
-  discordData,
 };

@@ -1,9 +1,9 @@
 import logger from './logger';
 import {
-  Discord, initializeClient, getClient, loginClient, owlBotToken,
+  Discord, initializeClient, getClient, loginClient,
 } from './client';
 import request from './request';
-import { publicApis } from './data';
+import { publicApis, env } from './data';
 import utils from './utils';
 
 let client: Discord.Client;
@@ -110,7 +110,7 @@ async function main(): Promise<void> {
             `${publicApis.owlbot}${parsedInput.argument}`,
             {
               headers: {
-                Authorization: `Token ${owlBotToken}`,
+                Authorization: `Token ${env.owlBotToken}`,
               },
             },
           );
