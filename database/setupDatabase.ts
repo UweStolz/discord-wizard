@@ -16,6 +16,7 @@ async function startDatabaseClient(): Promise<void> {
       application_name: 'Discord - Wizard',
       connectionString: env.databaseUrl,
       keepAlive: true,
+      ssl: true,
     });
   }
   listener(pool);
