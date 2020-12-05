@@ -14,7 +14,6 @@ async function startDatabaseClient(): Promise<void> {
       ssl: {
         rejectUnauthorized: false,
       },
-      keepAlive: true,
     });
   }
   listener(pool);
