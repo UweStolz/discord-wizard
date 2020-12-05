@@ -1,4 +1,5 @@
-import { Pool, Query } from 'pg';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Pool, Query, QueryResult } from 'pg';
 import { env } from '../data';
 import schemata from './schemata';
 import listener from './listener';
@@ -20,8 +21,8 @@ async function startDatabaseClient(): Promise<void> {
   await pool.connect();
 }
 
-export async function query<T extends Query>(queryStream: T): Promise<T | null> {
-  let res: T| null = null;
+export async function query(queryStream: string): Promise<QueryResult<any> | null> {
+  let res: QueryResult<any>| null = null;
   try {
     res = await pool.query(queryStream);
     logger.info('Query successfully executed:');
@@ -37,6 +38,7 @@ export async function query<T extends Query>(queryStream: T): Promise<T | null> 
 }
 
 async function initializeTables(): Promise<void> {
+  logger.info('Start initializing tables');
   const tableQueries = [];
 
   for (let i = 0; i < schemata.length; i += 1) {
@@ -50,8 +52,9 @@ async function initializeTables(): Promise<void> {
 
   // eslint-disable-next-line no-restricted-syntax
   for await (const [index, schema] of schemata.entries()) {
-    await pool.query(`CREATE TABLE IF NOT EXIST ${schema.table}(${tableQueries[index]});`);
+    await query(`CREATE TABLE IF NOT EXIST ${schema.table}(${tableQueries[index]});`);
   }
+  logger.info('Tables successfully initialized');
 }
 
 export default async function setupDatabase(): Promise<Pool> {
