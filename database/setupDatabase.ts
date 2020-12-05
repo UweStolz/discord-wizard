@@ -3,7 +3,7 @@ import { Pool, QueryResult } from 'pg';
 import { env } from '../data';
 import schemata from './schemata';
 import listener from './listener';
-import logger from '../logger';
+import logger, { objLogger } from '../logger';
 
 let pool: Pool;
 
@@ -11,10 +11,12 @@ async function startDatabaseClient(): Promise<void> {
   if (!pool) {
     pool = new Pool({
       application_name: 'Discord - Wizard',
-      connectionString: env.dataBaseUrl,
+      connectionString: env.db.dataBaseUrl,
+      user: env.db.user,
+      database: env.db.database,
+      password: env.db.password,
+      port: typeof env.db.port === 'string' ? parseInt(env.db.port as string, 10) : env.db.port,
       keepAlive: true,
-      user: 'root',
-      database: 'wizard',
     });
   }
   listener(pool);
@@ -30,7 +32,7 @@ export async function query(queryStream: string): Promise<QueryResult<any> | nul
   } catch (err) {
     logger.error('An error ocurred while executing the query:');
     logger.error(queryStream);
-    logger.error(err);
+    objLogger.error(err);
   } finally {
     await pool.end();
   }
@@ -64,7 +66,7 @@ export default async function setupDatabase(): Promise<Pool> {
     await initializeTables();
   } catch (err) {
     logger.error('Could not initialize database!');
-    logger.error(err);
+    objLogger.error(err);
   }
   return pool;
 }
