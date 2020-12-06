@@ -4,10 +4,10 @@ function statisticsSchema(list: Schema[]): void {
   const commandKeys = Object.keys(commands);
   const schema: Schema = {
     table: 'statistics',
-    columns: ['_id'],
-    datatypes: ['bigint primary key'],
+    columns: ['ID'],
+    datatypes: ['BIGINT PRIMARY KEY NOT NULL'],
   };
-  const dataType = 'INTEGER'; // INT4
+  const dataType = 'INT'; // INT4
   commandKeys.forEach((c: string) => {
     schema.columns.push(c);
     schema.datatypes.push(dataType);

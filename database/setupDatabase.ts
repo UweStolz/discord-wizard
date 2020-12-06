@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Pool, QueryResult } from 'pg';
+import { Pool, PoolClient, QueryResult } from 'pg';
 import { env } from '../data';
 import schemata from './schemata';
-import listener from './listener';
+import listener, { clientListener } from './listener';
 import logger, { objLogger } from '../logger';
 
 let pool: Pool;
+let client: PoolClient;
 
 async function startDatabaseClient(): Promise<void> {
   if (!pool) {
@@ -17,21 +18,27 @@ async function startDatabaseClient(): Promise<void> {
     });
   }
   listener(pool);
-  await pool.connect();
+}
+
+export async function getClient(): Promise<PoolClient> {
+  if (!client) {
+    client = await pool.connect();
+  }
+  return client;
 }
 
 export async function query(queryStream: string): Promise<QueryResult<any> | null> {
   let res: QueryResult<any>| null = null;
   try {
-    res = await pool.query(queryStream);
+    const connectedClient = await getClient();
+    res = await connectedClient.query(queryStream);
     logger.info('Query successfully executed:');
     logger.info(queryStream);
+    objLogger.info(res);
   } catch (err) {
     logger.error('An error ocurred while executing the query:');
     logger.error(queryStream);
     objLogger.error(err);
-  } finally {
-    await pool.end();
   }
   return res;
 }
@@ -60,14 +67,16 @@ async function initializeTables(): Promise<void> {
   logger.info('Tables successfully initialized');
 }
 
-export default async function setupDatabase(): Promise<Pool> {
+export default async function setupDatabase(): Promise<PoolClient|null> {
   try {
     logger.info('Start database initialization');
     await startDatabaseClient();
     await initializeTables();
+    client = await getClient();
+    clientListener(client);
   } catch (err) {
     logger.error('Could not initialize database!');
     objLogger.error(err);
   }
-  return pool;
+  return client;
 }
