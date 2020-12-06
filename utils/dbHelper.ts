@@ -15,12 +15,12 @@ export async function getStatistics(): Promise<string> {
 }
 
 export async function updateStatForColumn(column: string): Promise<void> {
-  const q = `SELECT ${column} FROM statistics`;
+  const q = `SELECT count FROM statistics WHERE name == ${column}`;
   const res = await query(q);
   if (res) {
     const currentCount: number = res.rows[0];
     const updatedCount = currentCount + 1;
-    const updateQuery = `UPDATE ${column} FROM statistics VALUE(${updatedCount})`;
+    const updateQuery = `UPDATE count FROM statistics  WHERE name == ${column} VALUE(${updatedCount})`;
     await query(updateQuery);
   }
 }
