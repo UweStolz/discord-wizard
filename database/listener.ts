@@ -8,7 +8,7 @@ export default function listener(pool: Pool): void {
   });
   pool.on('acquire', (client: PoolClient) => {
     logger.info('Database checked out client:');
-    objLogger.info(client);
+    objLogger.debug(client);
   });
   pool.on('error', (err: Error, client: PoolClient) => {
     logger.error('An error ocurred in the DB');
