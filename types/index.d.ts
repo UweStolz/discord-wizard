@@ -33,4 +33,5 @@ interface Schema {
   table: string;
   columns: string[];
   datatypes: string[];
+  values: Record<string, unknown>[];
 }

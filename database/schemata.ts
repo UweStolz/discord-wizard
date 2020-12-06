@@ -4,13 +4,23 @@ function statisticsSchema(list: Schema[]): void {
   const commandKeys = Object.keys(commands);
   const schema: Schema = {
     table: 'statistics',
-    columns: ['ID'],
-    datatypes: ['BIGINT PRIMARY KEY NOT NULL'],
+    columns: [
+      'ID',
+      'name',
+      'count',
+    ],
+    datatypes: [
+      'SERIAL PRIMARY KEY',
+      'char(20) NOT NULL',
+      'INT NOT NULL',
+    ],
+    values: [],
   };
-  const dataType = 'INT'; // INT4
-  commandKeys.forEach((c: string) => {
-    schema.columns.push(c);
-    schema.datatypes.push(dataType);
+  commandKeys.forEach((command: string) => {
+    schema.values.push({
+      name: command,
+      count: 0,
+    });
   });
   list.push(schema);
 }
