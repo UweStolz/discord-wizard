@@ -1,6 +1,7 @@
 import winston from 'winston';
 
 const logger = winston.createLogger({
+  level: 'info',
   format: winston.format.combine(
     winston.format.colorize(),
     winston.format.simple(),
@@ -11,6 +12,7 @@ const logger = winston.createLogger({
 });
 
 const objLogger = winston.createLogger({
+  level: 'info',
   format: winston.format.combine(
     winston.format.prettyPrint({ colorize: true }),
   ),
