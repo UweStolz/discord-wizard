@@ -7,16 +7,16 @@ import logger, { objLogger } from '../logger';
 
 let pool: Pool;
 
+const database = 'wizard';
+
 async function startDatabaseClient(): Promise<void> {
   if (!pool) {
     pool = new Pool({
+      database,
       application_name: 'Discord - Wizard',
-      connectionString: env.db.dataBaseUrl,
-      user: env.db.user,
-      database: env.db.database,
-      password: env.db.password,
-      port: typeof env.db.port === 'string' ? parseInt(env.db.port as string, 10) : env.db.port,
+      connectionString: env.databaseUrl,
       keepAlive: true,
+      ssl: true,
     });
   }
   listener(pool);
@@ -63,10 +63,22 @@ async function initializeTables(): Promise<void> {
   logger.info('Tables successfully initialized');
 }
 
+async function initializeDatabase(): Promise<void> {
+  logger.info('Start initializing Database');
+  const checkDatabaseExistQuery = `SELECT 1 FROM pg_database WHERE name=:${database}`;
+  const res = await query(checkDatabaseExistQuery);
+  const doesDatabaseExist = (res && res?.rowCount > 0);
+  if (!doesDatabaseExist) {
+    const createDatabaseQuery = `CREATE DATABASE ${database};`;
+    await query(createDatabaseQuery);
+  }
+}
+
 export default async function setupDatabase(): Promise<Pool> {
   try {
     logger.info('Start database initialization');
     await startDatabaseClient();
+    await initializeDatabase();
     await initializeTables();
   } catch (err) {
     logger.error('Could not initialize database!');
