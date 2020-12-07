@@ -64,6 +64,7 @@ typings/
 
 # Output of 'npm pack'
 *.tgz
+!npm-packages-offline-cache/*.tgz
 
 # Yarn Integrity file
 .yarn-integrity
