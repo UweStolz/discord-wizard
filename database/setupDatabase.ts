@@ -52,21 +52,12 @@ function getValueQuery(values: Record<string, unknown>[]): string {
 
     for (let i = 0; i < keys.length; i += 1) {
       const val = values[index][keys[i]];
-      if (typeof val === 'string') {
-        valueQuery += `'${val}'`;
-      } else {
-        valueQuery += `${val}`;
-      }
+      valueQuery += typeof val === 'string' ? `'${val}'` : `${val}`;
       if (i !== keys.length - 1) {
         valueQuery += ',';
       }
     }
-
-    if (index !== values.length - 1) {
-      valueQuery += '),';
-    } else {
-      valueQuery += ')';
-    }
+    valueQuery += index !== values.length - 1 ? '),' : ')';
   }
   return valueQuery;
 }
