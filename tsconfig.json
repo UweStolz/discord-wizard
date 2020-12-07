@@ -1,13 +1,10 @@
 {
-    "typeAcquisition": {
-        "enable": true
-    },
     "compilerOptions": {
         "target": "ES2019",
         "module": "commonjs",
         "strict": true,
         "jsx": "preserve",
-        "allowJs": true,
+        "allowJs": false,
         "importHelpers": true,
         "resolveJsonModule": true,
         "moduleResolution": "node",
@@ -29,7 +26,6 @@
     "exclude": [
         "node_modules",
         "built",
-        "coverage",
-        "types.ts"
+        "coverage"
     ]
 }
