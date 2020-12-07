@@ -4,6 +4,10 @@ export function globallyReplaceDashWithUnderscore(text: string): string {
   return text.replace(/-/gi, '_');
 }
 
+export function globallyReplaceUnderscoreWithDash(text: string): string {
+  return text.replace(/_/gi, '-');
+}
+
 export function getHelpMessage(): string {
   let message = '';
   const descriptions = Object.values(commands);

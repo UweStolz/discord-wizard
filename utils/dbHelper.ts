@@ -1,6 +1,7 @@
 import { QueryResult } from 'pg';
+import QuickChart from 'quickchart-js';
 import { query } from '../database';
-import { globallyReplaceDashWithUnderscore } from './helper';
+import { globallyReplaceDashWithUnderscore, globallyReplaceUnderscoreWithDash } from './helper';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function createTableIfNotExist(table: string, tableQuery: string): Promise<QueryResult<any>|null> {
@@ -9,18 +10,45 @@ export async function createTableIfNotExist(table: string, tableQuery: string): 
   return query(cleanedQuery);
 }
 
-export async function getStatistics(): Promise<string> {
-  let statistics = '';
-  const q = 'SELECT * FROM statistics';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function buildChart(data: any): Promise<Buffer> {
+  const chart = new QuickChart();
+  chart
+    .setConfig({
+      type: 'bar',
+      data: {
+        labels: data.labels,
+        datasets: [
+          { label: 'Command - Count', data: data.datasets },
+        ],
+      },
+    })
+    .setWidth(800)
+    .setHeight(400)
+    .setBackgroundColor('transparent');
+  const chartBuffer = chart.toBinary();
+  return chartBuffer;
+}
+
+export async function getStatistics(): Promise<Buffer|null> {
+  let chart = null;
+  const q = 'SELECT * FROM statistics ORDER BY id ASC';
   const res = await query(q);
   if (res) {
-    const { fields, rows } = res;
-    for (let index = 0; index < fields.length; index += 1) {
-      statistics += `${fields[index].name} `;
-    }
-    statistics += `\n${rows.toString()}`;
+    const { rows } = res;
+
+    const data = {
+      labels: [] as string[],
+      datasets: [] as number[],
+    };
+    rows.forEach((obj) => {
+      const name = globallyReplaceUnderscoreWithDash(obj.name);
+      data.labels.push(name);
+      data.datasets.push(obj.count);
+    });
+    chart = await buildChart(data);
   }
-  return statistics;
+  return chart;
 }
 
 export async function updateStatForColumn(column: string): Promise<void> {

@@ -5,12 +5,13 @@ import request from './request';
 import logger from './logger';
 
 async function stats(message: Discord.Message): Promise<void> {
-  const statistics: string = await utils.dbHelper.getStatistics();
-  const embed = new Discord.MessageEmbed({
-    title: 'Statistics',
-    description: statistics,
-  });
-  await message.channel.send(embed);
+  const embed = new Discord.MessageEmbed();
+  const chart = await utils.dbHelper.getStatistics();
+  if (chart) {
+    const attachment = new Discord.MessageAttachment(chart);
+    embed.attachFiles([attachment]);
+    await message.channel.send(embed);
+  }
 }
 
 async function help(message: Discord.Message): Promise<void> {
