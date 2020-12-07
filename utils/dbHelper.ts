@@ -1,4 +1,3 @@
-import chartJs from 'chart.js';
 import { QueryResult } from 'pg';
 import QuickChart from 'quickchart-js';
 import { query } from '../database';

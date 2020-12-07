@@ -16,6 +16,9 @@
         "emitDecoratorMetadata": true,
         "allowSyntheticDefaultImports": true,
         "outDir": "built",
+        "types": [
+            "chart.js"
+        ],
         "lib": [
             "ES2020",
             "dom",
