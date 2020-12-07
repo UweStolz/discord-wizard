@@ -78,9 +78,10 @@ async function initializeTables(): Promise<void> {
 
   // eslint-disable-next-line no-restricted-syntax
   for await (const [index, tableQuery] of tableQueries.entries()) {
-    const createTableResult = await utils.dbHelper.createTableIfNotExist(schemata[index].table, tableQuery);
-
-    if (schemata[index].values.length > 0 && createTableResult?.rowCount === null) {
+    await utils.dbHelper.createTableIfNotExist(schemata[index].table, tableQuery);
+    const checkForData = await query('SELECT 1 FROM statistics');
+    if (schemata[index].values.length > 0 && checkForData && checkForData?.rowCount === 0) {
+      logger.info('Inserting default data');
       const cols = schemata[index].columns.splice(1).toString();
       const values = getValueQuery(schemata[index].values);
       const insertQuery = `INSERT INTO ${schemata[index].table}(${cols}) VALUES ${values}`;
