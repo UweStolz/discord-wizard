@@ -1,5 +1,9 @@
 import { commands } from '../data';
 
+export function globallyReplaceDashWithUnderscore(text: string): string {
+  return text.replace(/-/gi, '_');
+}
+
 export function getHelpMessage(): string {
   let message = '';
   const descriptions = Object.values(commands);

@@ -4,6 +4,7 @@ import { env } from '../data';
 import schemata from './schemata';
 import listener, { clientListener } from './listener';
 import logger, { objLogger } from '../logger';
+import utils from '../utils';
 
 let pool: Pool;
 let client: PoolClient;
@@ -87,13 +88,13 @@ async function initializeTables(): Promise<void> {
   // eslint-disable-next-line no-restricted-syntax
   for await (const [index, tableQuery] of tableQueries.entries()) {
     const q = `CREATE TABLE IF NOT EXISTS ${schemata[index].table}(${tableQuery})`;
-    const cleanedQuery = q.replace(/-/gi, '_');
+    const cleanedQuery = utils.helper.globallyReplaceDashWithUnderscore(q);
     await query(cleanedQuery);
     if (schemata[index].values.length > 0) {
       const cols = schemata[index].columns.splice(1).toString();
       const values = getValueQuery(schemata[index].values);
       const insertQuery = `INSERT INTO ${schemata[index].table}(${cols}) VALUES ${values}`;
-      const cleanedInsertQuery = insertQuery.replace(/-/gi, '_');
+      const cleanedInsertQuery = utils.helper.globallyReplaceDashWithUnderscore(insertQuery);
       await query(cleanedInsertQuery);
     }
   }
