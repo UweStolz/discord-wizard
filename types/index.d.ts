@@ -13,6 +13,7 @@ interface owlbotResponse {
 }
 
 type Command =
+  'stats' |
   'help' |
   'ping' |
   'cat-fact'|
@@ -32,4 +33,5 @@ interface Schema {
   table: string;
   columns: string[];
   datatypes: string[];
+  values: Record<string, unknown>[];
 }

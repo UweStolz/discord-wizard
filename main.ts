@@ -2,7 +2,7 @@ import logger from './logger';
 import {
   Discord, initializeClient, getClient, loginClient,
 } from './client';
-import * as handler from './handler';
+import handleCommand from './handler';
 import parser from './parser';
 import './database';
 
@@ -16,43 +16,7 @@ function startListener(): void {
       if (argument) {
         logger.info(`Argument: ${argument}`);
       }
-      switch (command) {
-        case 'help': {
-          await handler.help(message);
-          break;
-        }
-        case 'ping':
-          await handler.ping(message);
-          break;
-        case 'cat-fact': {
-          await handler.catFact(message);
-          break;
-        }
-        case 'cat-pic': {
-          await handler.catPic(message);
-          break;
-        }
-        case 'quote': {
-          await handler.quote(message);
-          break;
-        }
-        case 'insult': {
-          await handler.insult(message, client, argument);
-          break;
-        }
-        case 'bored': {
-          await handler.bored(message);
-          break;
-        }
-        case 'what-is': {
-          await handler.whatIs(message, argument);
-          break;
-        }
-        default: {
-          await handler.defaultHandler(message);
-          break;
-        }
-      }
+      await handleCommand(command, message, client, argument);
     }
   });
 }

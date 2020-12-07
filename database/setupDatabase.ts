@@ -4,6 +4,7 @@ import { env } from '../data';
 import schemata from './schemata';
 import listener, { clientListener } from './listener';
 import logger, { objLogger } from '../logger';
+import utils from '../utils';
 
 let pool: Pool;
 let client: PoolClient;
@@ -43,27 +44,49 @@ export async function query(queryStream: string): Promise<QueryResult<any> | nul
   return res;
 }
 
+function getValueQuery(values: Record<string, unknown>[]): string {
+  const keys = Object.keys(values[0]);
+  let valueQuery = '';
+  for (let index = 0; index < values.length; index += 1) {
+    valueQuery += '(';
+
+    for (let i = 0; i < keys.length; i += 1) {
+      const val = values[index][keys[i]];
+      valueQuery += typeof val === 'string' ? `'${val}'` : `${val}`;
+      if (i !== keys.length - 1) {
+        valueQuery += ',';
+      }
+    }
+    valueQuery += index !== values.length - 1 ? '),' : ')';
+  }
+  return valueQuery;
+}
+
 async function initializeTables(): Promise<void> {
   logger.info('Start initializing tables');
   const tableQueries = [];
 
   for (let i = 0; i < schemata.length; i += 1) {
     const schema = schemata[i];
-    let q = '';
+    const tempQuery = [];
     for (let index = 0; index < schema.columns.length; index += 1) {
-      q += `${schema.columns[index]} ${schema.datatypes[index]}`;
-      if (index !== schema.columns.length - 1) {
-        q += ', ';
-      }
+      tempQuery.push(`${schema.columns[index]} ${schema.datatypes[index]}`);
     }
+    const q = tempQuery.toString();
     tableQueries.push(q);
   }
 
   // eslint-disable-next-line no-restricted-syntax
   for await (const [index, tableQuery] of tableQueries.entries()) {
-    const q = `CREATE TABLE IF NOT EXISTS ${schemata[index].table}(${tableQuery})`;
-    const cleanedQuery = q.replace(/-/gi, '_');
-    await query(cleanedQuery);
+    const createTableResult = await utils.dbHelper.createTableIfNotExist(schemata[index].table, tableQuery);
+
+    if (schemata[index].values.length > 0 && createTableResult?.rowCount === null) {
+      const cols = schemata[index].columns.splice(1).toString();
+      const values = getValueQuery(schemata[index].values);
+      const insertQuery = `INSERT INTO ${schemata[index].table}(${cols}) VALUES ${values}`;
+      const cleanedInsertQuery = utils.helper.globallyReplaceDashWithUnderscore(insertQuery);
+      await query(cleanedInsertQuery);
+    }
   }
   logger.info('Tables successfully initialized');
 }
