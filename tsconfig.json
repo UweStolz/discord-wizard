@@ -23,6 +23,9 @@
     "include": [
         "**/*.ts",
     ],
+    "ts-node": {
+        "transpileOnly": true,
+    },
     "exclude": [
         "node_modules",
         "built",
