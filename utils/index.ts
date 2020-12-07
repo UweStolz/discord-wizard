@@ -1,6 +1,6 @@
 import { getMemberFromServer, validateMember } from './discordHelper';
 import { getHelpMessage, getRandomNumberInRange, globallyReplaceDashWithUnderscore } from './helper';
-import { getStatistics, updateStatForColumn } from './dbHelper';
+import { getStatistics, updateStatForColumn, createTableIfNotExist } from './dbHelper';
 
 const utils = {
   helper: {
@@ -15,6 +15,7 @@ const utils = {
   dbHelper: {
     getStatistics,
     updateStatForColumn,
+    createTableIfNotExist,
   },
 };
 

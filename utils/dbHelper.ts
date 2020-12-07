@@ -1,4 +1,13 @@
+import { QueryResult } from 'pg';
 import { query } from '../database';
+import { globallyReplaceDashWithUnderscore } from './helper';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function createTableIfNotExist(table: string, tableQuery: string): Promise<QueryResult<any>|null> {
+  const q = `CREATE TABLE IF NOT EXISTS ${table}(${tableQuery})`;
+  const cleanedQuery = globallyReplaceDashWithUnderscore(q);
+  return query(cleanedQuery);
+}
 
 export async function getStatistics(): Promise<string> {
   let statistics = '';
