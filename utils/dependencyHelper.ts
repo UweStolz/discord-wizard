@@ -1,8 +1,8 @@
-// @ts-nocheck
+import '../node_modules/@types/chart.js/index.d';
 import QuickChart from 'quickchart-js';
 
 // eslint-disable-next-line import/prefer-default-export
-export async function buildChart(data: unknown): Promise<Buffer> {
+export async function buildChart(data: any): Promise<Buffer> {
   const chart = new QuickChart();
   chart
     .setConfig({
