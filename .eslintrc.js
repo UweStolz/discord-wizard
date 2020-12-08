@@ -21,6 +21,7 @@ module.exports = {
   ],
   rules: {
     '@typescript-eslint/ban-ts-ignore': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
     'max-len': [0, { code: 100, ignoreStrings: true }],
     'import/extensions': [
       'error',

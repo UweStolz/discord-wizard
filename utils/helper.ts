@@ -1,11 +1,15 @@
 import { commands } from '../data';
 
+function replaceInText(text: string, whatToReplace: string, replacement: string) {
+  return text.replace(`/${whatToReplace}/gi`, replacement);
+}
+
 export function globallyReplaceDashWithUnderscore(text: string): string {
-  return text.replace(/-/gi, '_');
+  return replaceInText(text, '-', '_');
 }
 
 export function globallyReplaceUnderscoreWithDash(text: string): string {
-  return text.replace(/_/gi, '-');
+  return replaceInText(text, '_', '-');
 }
 
 export function getHelpMessage(): string {
