@@ -1,4 +1,3 @@
-import '../node_modules/@types/chart.js/index.d';
 import QuickChart from 'quickchart-js';
 
 // eslint-disable-next-line import/prefer-default-export
