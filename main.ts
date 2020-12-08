@@ -16,7 +16,7 @@ function startListener(): void {
       if (argument) {
         logger.info(`Argument: ${argument}`);
       }
-      await handleCommand(command, message, client, argument);
+      await handleCommand(command, message, argument);
     }
   });
 }
