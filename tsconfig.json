@@ -1,10 +1,13 @@
 {
     "compilerOptions": {
+        "skipLibCheck": true,
+        "allowUmdGlobalAccess": true,
+        "incremental": true,
         "target": "ES2019",
         "module": "commonjs",
         "strict": true,
         "jsx": "preserve",
-        "allowJs": true,
+        "allowJs": false,
         "importHelpers": true,
         "resolveJsonModule": true,
         "moduleResolution": "node",
@@ -21,12 +24,16 @@
         ],
     },
     "include": [
+        "node_modules/@types/chart.js/index",
         "**/*.ts",
     ],
+    "ts-node": {
+        "transpileOnly": true,
+        "files": true
+    },
     "exclude": [
         "node_modules",
         "built",
-        "coverage",
-        "types.ts"
+        "coverage"
     ]
 }

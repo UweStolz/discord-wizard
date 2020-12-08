@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build:dev": "yarn run tsc -p ./tsconfig.json",
-    "start:dev": "yarn ts-node --transpile-only index.ts",
+    "start:dev": "yarn ts-node index.ts",
     "start": "node index.js"
   },
   "dependencies": {
@@ -28,6 +28,7 @@
     "zlib-sync": "^0.1.7"
   },
   "devDependencies": {
+    "@types/chart.js": "^2.9.28",
     "@types/node": "^14.14.10",
     "@types/pg": "^7.14.7",
     "@types/ws": "^7.4.0",

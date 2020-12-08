@@ -1,33 +1,13 @@
 import { QueryResult } from 'pg';
-import QuickChart from 'quickchart-js';
 import { query } from '../database';
 import { globallyReplaceDashWithUnderscore, globallyReplaceUnderscoreWithDash } from './helper';
+import { buildChart } from './dependencyHelper';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function createTableIfNotExist(table: string, tableQuery: string): Promise<QueryResult<any>|null> {
   const q = `CREATE TABLE IF NOT EXISTS ${table}(${tableQuery})`;
   const cleanedQuery = globallyReplaceDashWithUnderscore(q);
   return query(cleanedQuery);
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function buildChart(data: any): Promise<Buffer> {
-  const chart = new QuickChart();
-  chart
-    .setConfig({
-      type: 'bar',
-      data: {
-        labels: data.labels,
-        datasets: [
-          { label: 'Command - Count', data: data.datasets },
-        ],
-      },
-    })
-    .setWidth(800)
-    .setHeight(400)
-    .setBackgroundColor('transparent');
-  const chartBuffer = chart.toBinary();
-  return chartBuffer;
 }
 
 export async function getStatistics(): Promise<Buffer|null> {
