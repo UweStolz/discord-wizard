@@ -1,7 +1,8 @@
-import { Discord } from '../client';
+import { Discord, getClient } from '../client';
 import { env } from '../data';
 
-export function getMemberFromServer(client: Discord.Client): Discord.GuildMember[] | null {
+export async function getMemberFromServer(): Promise<Discord.GuildMember[] | null> {
+  const client = await getClient();
   let membersArr = null;
   const list = client.guilds.cache.get(env.serverId as string);
   const members = list?.members.cache;

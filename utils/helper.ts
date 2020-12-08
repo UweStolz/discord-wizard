@@ -1,15 +1,7 @@
 import { commands } from '../data';
 
-function replaceInText(text: string, whatToReplace: string, replacement: string) {
+export function replaceInText(text: string, whatToReplace: string, replacement: string): string {
   return text.replace(`/${whatToReplace}/gi`, replacement);
-}
-
-export function globallyReplaceDashWithUnderscore(text: string): string {
-  return replaceInText(text, '-', '_');
-}
-
-export function globallyReplaceUnderscoreWithDash(text: string): string {
-  return replaceInText(text, '_', '-');
 }
 
 export function getHelpMessage(): string {

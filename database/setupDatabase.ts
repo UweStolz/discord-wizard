@@ -35,7 +35,8 @@ export async function query(queryStream: string): Promise<QueryResult<any> | nul
     res = await connectedClient.query(queryStream);
     logger.info('Query successfully executed:');
     logger.info(queryStream);
-    objLogger.info(res);
+    logger.info(`Row count: ${res.rowCount}`);
+    objLogger.debug(res);
   } catch (err) {
     logger.error('An error ocurred while executing the query:');
     logger.error(queryStream);
@@ -85,8 +86,7 @@ async function initializeTables(): Promise<void> {
       const cols = schemata[index].columns.splice(1).toString();
       const values = getValueQuery(schemata[index].values);
       const insertQuery = `INSERT INTO ${schemata[index].table}(${cols}) VALUES ${values}`;
-      const cleanedInsertQuery = utils.helper.globallyReplaceDashWithUnderscore(insertQuery);
-      await query(cleanedInsertQuery);
+      await query(insertQuery);
     }
   }
   logger.info('Tables successfully initialized');

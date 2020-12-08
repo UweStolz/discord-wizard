@@ -1,13 +1,11 @@
 import { QueryResult } from 'pg';
 import { query } from '../database';
-import { globallyReplaceDashWithUnderscore, globallyReplaceUnderscoreWithDash } from './helper';
 import { buildChart } from './dependencyHelper';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function createTableIfNotExist(table: string, tableQuery: string): Promise<QueryResult<any>|null> {
   const q = `CREATE TABLE IF NOT EXISTS ${table}(${tableQuery})`;
-  const cleanedQuery = globallyReplaceDashWithUnderscore(q);
-  return query(cleanedQuery);
+  return query(q);
 }
 
 export async function getStatistics(): Promise<Buffer|null> {
@@ -22,8 +20,7 @@ export async function getStatistics(): Promise<Buffer|null> {
       datasets: [] as number[],
     };
     rows.forEach((obj) => {
-      const name = globallyReplaceUnderscoreWithDash(obj.name);
-      data.labels.push(name);
+      data.labels.push(obj.name);
       data.datasets.push(obj.count);
     });
     chart = await buildChart(data);

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Discord } from './client';
 import utils from './utils';
 import { publicApis, env } from './data';
@@ -28,17 +29,19 @@ async function ping(message: Discord.Message): Promise<void> {
   await utils.dbHelper.updateStatForColumn('ping');
 }
 
-async function catFact(message: Discord.Message): Promise<void> {
-  const { fact } = await request('GET', publicApis.catFact, undefined);
-  if (fact) {
-    await message.channel.send(`FACT: "${fact}"`);
-  }
-}
-
-async function catPic(message: Discord.Message): Promise<void> {
-  const { file } = await request('GET', publicApis.catPic, undefined);
-  if (file) {
-    await message.channel.send(file);
+async function cat(message: Discord.Message, argument: string | null): Promise<void> {
+  if (argument) {
+    if (argument === 'fact') {
+      const { fact } = await request('GET', publicApis.catFact, undefined);
+      if (fact) {
+        await message.channel.send(`FACT: "${fact}"`);
+      }
+    } else if (argument === 'pic') {
+      const { file } = await request('GET', publicApis.catPic, undefined);
+      if (file) {
+        await message.channel.send(file);
+      }
+    }
   }
 }
 
@@ -49,9 +52,9 @@ async function quote(message: Discord.Message): Promise<void> {
   }
 }
 
-async function insult(message: Discord.Message, client: Discord.Client, argument: string|null = null): Promise<void> {
+async function insult(message: Discord.Message, argument: string | null = null): Promise<void> {
   const insultToMember = await request('GET', publicApis.insult, undefined) || null;
-  const allMembers = utils.discordHelper.getMemberFromServer(client);
+  const allMembers = await utils.discordHelper.getMemberFromServer();
 
   if (insultToMember && allMembers) {
     const members = allMembers?.filter((m) => (m.displayName !== 'wizard'));
@@ -128,8 +131,7 @@ const handlerMapping: Handlers = {
   stats,
   help,
   ping,
-  catFact,
-  catPic,
+  cat,
   quote,
   insult,
   bored,
@@ -140,9 +142,8 @@ const handlerMapping: Handlers = {
 export default async function handleCommand(command: Command, message: Discord.Message, ...args: any[]): Promise<void> {
   const func = handlerMapping[command];
   if (func) {
-    await func(message, args);
-    const cleanedCommand = utils.helper.globallyReplaceDashWithUnderscore(command);
-    await utils.dbHelper.updateStatForColumn(cleanedCommand);
+    await func(message, ...args);
+    await utils.dbHelper.updateStatForColumn(command);
   } else {
     defaultHandler(message);
   }
