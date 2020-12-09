@@ -58,7 +58,7 @@ async function insult(message: Discord.Message, argument: string | null = null):
 
   if (insultToMember && allMembers) {
     const members = allMembers?.filter((m) => (m.displayName !== 'wizard'));
-    const utf8ConvertedInsult = Buffer.from(insultToMember, 'utf-8');
+    const utf8ConvertedInsult = Buffer.from(insultToMember.insult).toString();
 
     let member: Discord.GuildMember;
     if (argument) {
