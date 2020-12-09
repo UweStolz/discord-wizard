@@ -1,3 +1,5 @@
+import { readdirSync } from 'fs';
+import { resolve } from 'path';
 import { commands } from '../data';
 
 export function replaceInText(text: string, whatToReplace: string, replacement: string): string {
@@ -18,4 +20,13 @@ export function getRandomNumberInRange(min: number, max: number): number {
     Math.random() * (max - min + 1) + min,
   );
   return randomNumber;
+}
+
+export function getRandomMagicConchAudioFile(): string {
+  const rootDir = resolve();
+  const audioFilesDir = `${rootDir}/assets/audio/magicConch`;
+  const files = readdirSync(audioFilesDir).map((path) => `${audioFilesDir}/${path}`);
+  const randomNumber = getRandomNumberInRange(0, files.length - 1);
+  const randomFile = files[randomNumber];
+  return randomFile;
 }

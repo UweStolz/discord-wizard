@@ -32,7 +32,7 @@ export async function updateStatForColumn(column: string): Promise<void> {
   await query('SELECT name from statistics');
   const q = `SELECT count FROM statistics WHERE name = '${column}'`;
   const res = await query(q);
-  if (res) {
+  if (res && res.rows.length > 0) {
     const currentCount: number = res.rows[0].count;
     const updatedCount = currentCount + 1;
     const updateQuery = `UPDATE statistics SET count = ${updatedCount} WHERE name = '${column}'`;

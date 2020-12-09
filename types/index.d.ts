@@ -16,12 +16,12 @@ type Command =
   'stats' |
   'help' |
   'ping' |
-  'cat-fact'|
-  'cat-pic' |
+  'catFact'|
+  'catPic' |
   'quote' |
   'insult' |
   'bored' |
-  'what-is'
+  'whatIs'
 ;
 
 interface ParsedInput {

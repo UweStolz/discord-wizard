@@ -117,7 +117,12 @@ async function whatIs(message: Discord.Message, argument: string|null = null): P
   }
 }
 
-export async function defaultHandler(message: Discord.Message): Promise<void> {
+async function conch(message: Discord.Message): Promise<void> {
+  const filePath = utils.helper.getRandomMagicConchAudioFile();
+  await utils.discordHelper.sendToVoiceChannel(message, filePath);
+}
+
+async function defaultHandler(message: Discord.Message): Promise<void> {
   const defaultMessage = "Could not find command, use '/wizard help' to display all available commands.";
   await message.channel.send(defaultMessage);
 }
@@ -136,6 +141,7 @@ const handlerMapping: Handlers = {
   insult,
   bored,
   whatIs,
+  conch,
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

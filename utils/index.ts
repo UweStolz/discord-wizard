@@ -1,5 +1,7 @@
-import { getMemberFromServer, validateMember } from './discordHelper';
-import { getHelpMessage, getRandomNumberInRange, replaceInText } from './helper';
+import { getMemberFromServer, validateMember, sendToVoiceChannel } from './discordHelper';
+import {
+  getHelpMessage, getRandomNumberInRange, replaceInText, getRandomMagicConchAudioFile,
+} from './helper';
 import { getStatistics, updateStatForColumn, createTableIfNotExist } from './dbHelper';
 
 const utils = {
@@ -7,10 +9,12 @@ const utils = {
     getHelpMessage,
     getRandomNumberInRange,
     replaceInText,
+    getRandomMagicConchAudioFile,
   },
   discordHelper: {
     getMemberFromServer,
     validateMember,
+    sendToVoiceChannel,
   },
   dbHelper: {
     getStatistics,
