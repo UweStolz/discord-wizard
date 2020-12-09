@@ -35,6 +35,7 @@ jobs:
     # Copy files to for deployment
     - run: cp ./package.json ./built/
     - run: cp ./Procfile ./built/
+    - run: cp -r ./assets/ ./built
   
     - name: Deploy
       uses: s0/git-publish-subdir-action@develop
