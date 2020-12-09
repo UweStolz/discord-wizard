@@ -1,6 +1,7 @@
 import * as env from './env';
 
 const commands = {
+  conch: 'Play a random clip from the magic conch',
   stats: 'Display statistics for all available commands',
   help: 'Display all available commands',
   ping: 'Message to test the connection to the BOT',
