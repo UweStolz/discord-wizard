@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Discord } from './client';
-import utils from './utils';
-import { publicApis, env } from './data';
-import request from './request';
-import logger from './logger';
+import { Discord } from '../client';
+import utils from '../utils';
+import { publicApis, env } from '../data';
+import request from '../request';
+import logger from '../logger';
 
 async function stats(message: Discord.Message): Promise<void> {
   const embed = new Discord.MessageEmbed();
@@ -132,7 +132,7 @@ interface Handlers {
   [name: string]: (message: Discord.Message, ...args: any[]) => Promise<void>;
 }
 
-const handlerMapping: Handlers = {
+const handlers: Handlers = {
   stats,
   help,
   ping,
@@ -142,15 +142,7 @@ const handlerMapping: Handlers = {
   bored,
   whatIs,
   conch,
+  defaultHandler,
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default async function handleCommand(command: Command, message: Discord.Message, ...args: any[]): Promise<void> {
-  const func = handlerMapping[command];
-  if (func) {
-    await func(message, ...args);
-    await utils.dbHelper.updateStatForColumn(command);
-  } else {
-    defaultHandler(message);
-  }
-}
+export default handlers;
