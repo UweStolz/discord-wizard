@@ -34,6 +34,12 @@ Either place a `.env` file at root of the project or export the variables direct
 - C_ALIAS
   - The alias for the command, default: `/w`
 
+
+## Public APIs
+
+A list of all used public apis can be found in the `publicApis` object [inside](https://github.com/UweStolz/discord-wizard/blob/da730f3b8bb170503c96ad8bc500fd4a374a7841/data.ts#L15) of the `data.ts` file.  
+
+
 ---  
    
 ## Built with
