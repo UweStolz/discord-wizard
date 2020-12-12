@@ -24,7 +24,7 @@ Either place a `.env` file at root of the project or export the variables direct
 - TOKEN
   - The API key for your Discord bot
 - OWLBOT
-  - An API key for the (Owlbot dictionary API)[https://owlbot.info/]
+  - An API key for the [Owlbot dictionary API](https://owlbot.info/)
 - SERVERID
   - The ID of your server the bot resides in
 - DATABASE_URL
