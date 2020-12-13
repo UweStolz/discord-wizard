@@ -9,7 +9,8 @@ export default function parser(input: string): ParsedInput {
     argument: null,
   };
 
-  const isValidCommand = (input.startsWith(commandPrefix) || input.startsWith(commandPrefixAlias));
+  const cleanInput = input.trim();
+  const isValidCommand = (cleanInput.startsWith(commandPrefix) || cleanInput.startsWith(commandPrefixAlias));
   if (isValidCommand) {
     const words = input.split(' ');
     parsedInput.command = words.length > 0 ? words[1] as Command : null;
