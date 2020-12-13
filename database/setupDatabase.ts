@@ -135,11 +135,13 @@ async function initializeTables(): Promise<void> {
 
 export default async function setupDatabase(): Promise<PoolClient|null> {
   try {
-    logger.info('Start database initialization');
-    await startDatabaseClient();
-    await initializeTables();
-    client = await getClient();
-    clientListener(client);
+    if (!env.disableDB) {
+      logger.info('Start database initialization');
+      await startDatabaseClient();
+      await initializeTables();
+      client = await getClient();
+      clientListener(client);
+    }
   } catch (err) {
     logger.error('Could not initialize database!');
     objLogger.error(err);

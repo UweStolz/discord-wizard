@@ -33,7 +33,8 @@ Either place a `.env` file at root of the project or export the variables direct
   -  How to call the bot in a text channel, default: `/wizard`
 - C_ALIAS
   - The alias for the command, default: `/w`
-
+- DISABLE_DB
+  - Explicitly disables the DB
 
 ## Public APIs
 

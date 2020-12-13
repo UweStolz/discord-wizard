@@ -6,12 +6,16 @@ import request from '../request';
 import logger from '../logger';
 
 async function stats(message: Discord.Message): Promise<void> {
-  const embed = new Discord.MessageEmbed();
-  const chart = await utils.dbHelper.getStatistics();
-  if (chart) {
-    const attachment = new Discord.MessageAttachment(chart);
-    embed.attachFiles([attachment]);
-    await message.channel.send(embed);
+  if (!env.disableDB) {
+    const embed = new Discord.MessageEmbed();
+    const chart = await utils.dbHelper.getStatistics();
+    if (chart) {
+      const attachment = new Discord.MessageAttachment(chart);
+      embed.attachFiles([attachment]);
+      await message.channel.send(embed);
+    }
+  } else {
+    await message.channel.send('Could not get statistics, the DB is disabled!');
   }
 }
 
@@ -26,7 +30,6 @@ async function help(message: Discord.Message): Promise<void> {
 
 async function ping(message: Discord.Message): Promise<void> {
   await message.channel.send('pong');
-  await utils.dbHelper.updateStatForColumn('ping');
 }
 
 async function cat(message: Discord.Message, argument: string | null): Promise<void> {
