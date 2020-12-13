@@ -1,6 +1,6 @@
-import { commands } from '../data';
+import { commands } from '../../data';
 
-function statisticsSchema(list: Schema[]): void {
+export default function statistics(list: Schema[]): void {
   const commandKeys = Object.keys(commands);
   const schema: Schema = {
     table: 'statistics',
@@ -24,14 +24,3 @@ function statisticsSchema(list: Schema[]): void {
   });
   list.push(schema);
 }
-
-function generateSchemata() {
-  const schemataList: Schema[] = [];
-  statisticsSchema(schemataList);
-
-  return schemataList;
-}
-
-const schemata = generateSchemata();
-
-export default schemata;
