@@ -1,10 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Pool, PoolClient, QueryResult } from 'pg';
+import { Pool, PoolClient } from './pg';
 import { env } from '../data';
 import schemata from './schemata';
 import listener, { clientListener } from './listener';
 import logger, { objLogger } from '../logger';
 import utils from '../utils';
+import query from './query';
+
+/*
+  TODO:
+    - handle migration
+    - cleanup/refactoring
+*/
 
 let pool: Pool;
 let client: PoolClient;
@@ -28,23 +35,6 @@ export async function getClient(): Promise<PoolClient> {
   return client;
 }
 
-export async function query(queryStream: string): Promise<QueryResult<any> | null> {
-  let res: QueryResult<any>| null = null;
-  try {
-    const connectedClient = await getClient();
-    res = await connectedClient.query(queryStream);
-    logger.info('Query successfully executed:');
-    logger.info(queryStream);
-    logger.info(`Row count: ${res.rowCount}`);
-    objLogger.debug(res);
-  } catch (err) {
-    logger.error('An error ocurred while executing the query:');
-    logger.error(queryStream);
-    objLogger.error(err);
-  }
-  return res;
-}
-
 function getValueQuery(values: Record<string, unknown>[]): string {
   const keys = Object.keys(values[0]);
   let valueQuery = '';
@@ -63,6 +53,46 @@ function getValueQuery(values: Record<string, unknown>[]): string {
   return valueQuery;
 }
 
+function buildAlterTableQueryData(columnData: any[]): string {
+  let q = '';
+  columnData.forEach((columnObj, index: number) => {
+    q += `${columnObj.column} ${columnObj.dataType}`;
+    if (index !== columnData.length - 1) {
+      q += ',';
+    }
+  });
+  return q;
+}
+
+async function collectMissingColumns(schema: Schema): Promise<any[]|null> {
+  const missingColumnData: any[] = [];
+  const table = await query('SELECT * FROM statistics');
+  if (table) {
+    const fieldNamesInDB = table?.fields.map((field) => field.name);
+    schema.columns.forEach((name: string, index: number) => {
+      const columnIndex = fieldNamesInDB.indexOf(name);
+
+      if (columnIndex === -1) {
+        const obj = {
+          column: name,
+          value: schema.values[index],
+          dataType: schema.datatypes[index],
+        };
+        missingColumnData.push(obj);
+      }
+    });
+  }
+  return missingColumnData.length > 0 ? missingColumnData : null;
+}
+
+async function insertValues(schema: Schema): Promise<void> {
+  logger.info('Inserting default data');
+  const cols = schema.columns.splice(1).toString();
+  const values = getValueQuery(schema.values);
+  const insertQuery = `INSERT INTO ${schema.table}(${cols}) VALUES ${values}`;
+  await query(insertQuery);
+}
+
 async function initializeTables(): Promise<void> {
   logger.info('Start initializing tables');
   const tableQueries = [];
@@ -79,14 +109,24 @@ async function initializeTables(): Promise<void> {
 
   // eslint-disable-next-line no-restricted-syntax
   for await (const [index, tableQuery] of tableQueries.entries()) {
+    // Create the table for given schema, if it doesn't exist already
     await utils.dbHelper.createTableIfNotExist(schemata[index].table, tableQuery);
-    const checkForData = await query('SELECT 1 FROM statistics');
+
+    // If the table is empty fill it with default data
+    const checkForData = await query(`SELECT 1 FROM ${schemata[index].table}`);
     if (schemata[index].values.length > 0 && checkForData && checkForData?.rowCount === 0) {
-      logger.info('Inserting default data');
-      const cols = schemata[index].columns.splice(1).toString();
-      const values = getValueQuery(schemata[index].values);
-      const insertQuery = `INSERT INTO ${schemata[index].table}(${cols}) VALUES ${values}`;
-      await query(insertQuery);
+      await insertValues(schemata[index]);
+    } else {
+      // Try to collect missing columns from the DB, if any
+      const missingColumnData = await collectMissingColumns(schemata[index]);
+
+      if (missingColumnData) {
+        // Add the missing columns with default data from the schema
+        const queryData = buildAlterTableQueryData(missingColumnData);
+        const alterTableQuery = `ALTER TABLE ${schemata[index].table} ADD COLUMN ${queryData}`;
+        await query(alterTableQuery);
+        await insertValues(schemata[index]);
+      }
     }
   }
   logger.info('Tables successfully initialized');
