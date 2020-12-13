@@ -64,12 +64,13 @@ function buildAlterTableQueryData(columnData: any[]): string {
   return q;
 }
 
-async function collectMissingColumns(schema: Schema): Promise<any[]|null> {
+async function collectMissingColumns(schema: Schema): Promise<any[] | null> {
   const missingColumnData: any[] = [];
+  const cols = schema.columns.splice(1);
   const table = await query('SELECT * FROM statistics');
   if (table) {
     const fieldNamesInDB = table?.fields.map((field) => field.name);
-    schema.columns.forEach((name: string, index: number) => {
+    cols.forEach((name: string, index: number) => {
       const columnIndex = fieldNamesInDB.indexOf(name);
 
       if (columnIndex === -1) {
