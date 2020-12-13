@@ -2,17 +2,17 @@ import { readdirSync } from 'fs';
 import { resolve } from 'path';
 import { commands } from '../data';
 
-export function replaceInText(text: string, whatToReplace: string, replacement: string): string {
-  return text.replace(`/${whatToReplace}/gi`, replacement);
-}
+const magicConchAudioFiles: string[] = [];
+let helpMessage = '';
 
 export function getHelpMessage(): string {
-  let message = '';
-  const descriptions = Object.values(commands);
-  Object.keys(commands).forEach((command: string, index: number) => {
-    message += `${command}: ${descriptions[index]} \n`;
-  });
-  return message;
+  if (helpMessage.length === 0) {
+    const descriptions = Object.values(commands);
+    Object.keys(commands).forEach((command: string, index: number) => {
+      helpMessage += `${command}: ${descriptions[index]} \n`;
+    });
+  }
+  return helpMessage;
 }
 
 export function getRandomNumberInRange(min: number, max: number): number {
@@ -23,10 +23,15 @@ export function getRandomNumberInRange(min: number, max: number): number {
 }
 
 export function getRandomMagicConchAudioFile(): string {
-  const rootDir = resolve();
-  const audioFilesDir = `${rootDir}/assets/audio/magicConch`;
-  const files = readdirSync(audioFilesDir).map((path) => `${audioFilesDir}/${path}`);
-  const randomNumber = getRandomNumberInRange(0, files.length - 1);
-  const randomFile = files[randomNumber];
+  if (magicConchAudioFiles.length === 0) {
+    const rootDir = resolve();
+    const audioFilesDir = `${rootDir}/assets/audio/magicConch`;
+    readdirSync(audioFilesDir).forEach((path) => {
+      magicConchAudioFiles.push(`${audioFilesDir}/${path}`);
+    });
+  }
+
+  const randomNumber = getRandomNumberInRange(0, magicConchAudioFiles.length - 1);
+  const randomFile = magicConchAudioFiles[randomNumber];
   return randomFile;
 }
