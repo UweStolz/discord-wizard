@@ -126,7 +126,8 @@ async function conch(message: Discord.Message): Promise<void> {
 }
 
 async function defaultHandler(message: Discord.Message): Promise<void> {
-  const defaultMessage = "Could not find command, use '/wizard help' to display all available commands.";
+  const prefix = env.commandPrefix || '/wizard';
+  const defaultMessage = `Could not find command, use '${prefix} help' to display all available commands.`;
   await message.channel.send(defaultMessage);
 }
 
