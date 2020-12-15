@@ -2,9 +2,14 @@ import logger from './logger';
 import {
   Discord, initializeClient, getClient, loginClient,
 } from './client';
+import { env } from './data';
 import handleCommand from './handler';
 import parser from './parser';
-import './database';
+
+if (!env.disableDB) {
+  // eslint-disable-next-line global-require
+  require('./database');
+}
 
 let client: Discord.Client;
 

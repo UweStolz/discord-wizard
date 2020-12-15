@@ -1,4 +1,4 @@
-import { Pool, PoolClient } from 'pg';
+import { Pool, PoolClient } from './pg';
 import logger, { objLogger } from '../logger';
 
 export default function listener(pool: Pool): void {

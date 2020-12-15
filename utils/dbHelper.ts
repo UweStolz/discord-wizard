@@ -1,5 +1,4 @@
-import { QueryResult } from 'pg';
-import { query } from '../database';
+import { query, QueryResult } from '../database';
 import { buildChart } from './dependencyHelper';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
