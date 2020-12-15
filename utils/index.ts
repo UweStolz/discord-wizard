@@ -1,6 +1,6 @@
 import { getMemberFromServer, validateMember, sendToVoiceChannel } from './discordHelper';
 import {
-  getHelpMessage, getRandomNumberInRange, replaceInText, getRandomMagicConchAudioFile,
+  getHelpMessage, getRandomNumberInRange, getRandomMagicConchAudioFile,
 } from './helper';
 import { getStatistics, updateStatForColumn, createTableIfNotExist } from './dbHelper';
 
@@ -8,7 +8,6 @@ const utils = {
   helper: {
     getHelpMessage,
     getRandomNumberInRange,
-    replaceInText,
     getRandomMagicConchAudioFile,
   },
   discordHelper: {
