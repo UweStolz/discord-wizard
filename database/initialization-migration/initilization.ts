@@ -27,22 +27,27 @@ export default async function initilization(): Promise<void> {
 
     // Check for further migration, if table already exists
     if (createTableResult && createTableResult?.rowCount === null) {
-      // Try to collect missing columns from the DB, if any
-      const missingColumnData = await collectMissingColumns(schemata[index]);
-      if (missingColumnData) {
+      const table = await query(`SELECT * FROM ${schemata[index].table}`);
+      if (table) {
+        // Try to collect missing columns from the DB, if any
+        const missingColumnData = await collectMissingColumns(schemata[index], table.fields);
+        if (missingColumnData) {
         // Add the missing columns with default data from the schema
-        const queryData = buildAlterTableQueryData(missingColumnData);
-        const alterTableQuery = `ALTER TABLE ${schemata[index].table} ADD COLUMN ${queryData}`;
-        await query(alterTableQuery);
-        await insertValues(schemata[index]);
-      }
+          const queryData = buildAlterTableQueryData(missingColumnData);
+          const alterTableQuery = `ALTER TABLE ${schemata[index].table} ADD COLUMN ${queryData}`;
+          await query(alterTableQuery);
+          await insertValues(schemata[index]);
+        }
 
-      // Remove columns which are not present in schema
-      const columnsToRemove = await collectRemovableColumns(schemata[index]);
-      if (columnsToRemove) {
-        const queryData = buildAlterTableQuery('DROP COLUMN IF EXISTS', columnsToRemove);
-        const alterTableQuery = `ALTER TABLE ${schemata[index].table} ${queryData}`;
-        await query(alterTableQuery);
+        // Remove columns which are not present in schema
+        const columnsToRemove = await collectRemovableColumns(schemata[index], table.fields);
+        if (columnsToRemove) {
+          const queryData = buildAlterTableQuery('DROP COLUMN IF EXISTS', columnsToRemove);
+          const alterTableQuery = `ALTER TABLE ${schemata[index].table} ${queryData}`;
+          await query(alterTableQuery);
+        }
+      } else {
+        logger.error(`Could not get data during migration, for table: ${schemata[index].table}`);
       }
     } else {
       // Insert default data, if table was just created

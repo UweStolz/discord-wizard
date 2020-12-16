@@ -1,3 +1,4 @@
+import { FieldDef } from '../pg';
 import logger from '../../logger';
 import query from '../query';
 
@@ -62,40 +63,35 @@ export async function insertValues(schema: Schema): Promise<void> {
   await query(insertQuery);
 }
 
-export async function collectRemovableColumns(schema: Schema): Promise<any[] | null> {
+export async function collectRemovableColumns(schema: Schema, fields: FieldDef[]): Promise<any[] | null> {
   const columnsToRemove: any[] = [];
-  const table = await query('SELECT * FROM statistics');
-  if (table) {
-    const fieldNamesInDB = table?.fields.map((field) => field.name);
-    const fieldNamesInDBWithoutIndex = removeIdFromSchema(fieldNamesInDB);
-    fieldNamesInDBWithoutIndex.forEach((name: string) => {
-      const columnIndex = schema.columns.indexOf(name);
-      if (columnIndex === -1) {
-        columnsToRemove.push(name);
-      }
-    });
-  }
+  const fieldNamesInDB = fields.map((field) => field.name);
+  const fieldNamesInDBWithoutIndex = removeIdFromSchema(fieldNamesInDB);
+  fieldNamesInDBWithoutIndex.forEach((name: string) => {
+    const columnIndex = schema.columns.indexOf(name);
+    if (columnIndex === -1) {
+      columnsToRemove.push(name);
+    }
+  });
   return columnsToRemove.length > 0 ? columnsToRemove : null;
 }
 
-export async function collectMissingColumns(schema: Schema): Promise<any[] | null> {
+export async function collectMissingColumns(schema: Schema, fields: FieldDef[]): Promise<any[] | null> {
   const missingColumnData: any[] = [];
   const cols = removeIdFromSchema(schema.columns);
-  const table = await query('SELECT * FROM statistics');
-  if (table) {
-    const fieldNamesInDB = table?.fields.map((field) => field.name);
-    cols.forEach((name: string, index: number) => {
-      const columnIndex = fieldNamesInDB.indexOf(name);
 
-      if (columnIndex === -1) {
-        const obj = {
-          column: name,
-          value: schema.values[index],
-          dataType: schema.datatypes[index],
-        };
-        missingColumnData.push(obj);
-      }
-    });
-  }
+  const fieldNamesInDB = fields.map((field) => field.name);
+  cols.forEach((name: string, index: number) => {
+    const columnIndex = fieldNamesInDB.indexOf(name);
+
+    if (columnIndex === -1) {
+      const obj = {
+        column: name,
+        value: schema.values[index],
+        dataType: schema.datatypes[index],
+      };
+      missingColumnData.push(obj);
+    }
+  });
   return missingColumnData.length > 0 ? missingColumnData : null;
 }
