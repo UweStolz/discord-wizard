@@ -5,12 +5,6 @@ import listener, { clientListener } from './listener';
 import initilization from './initialization-migration/initilization';
 import logger, { objLogger } from '../logger';
 
-/*
-  TODO:
-    - handle migration
-    - cleanup/refactoring
-*/
-
 let pool: Pool;
 let client: PoolClient;
 

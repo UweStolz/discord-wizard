@@ -2,7 +2,9 @@ import logger from '../../logger';
 import schemata from '../schemata';
 import query from '../query';
 import utils from '../../utils';
-import { buildAlterTableQueryData, collectMissingColumns, insertValues } from './migration';
+import {
+  buildAlterTableQueryData, collectMissingColumns, insertValues, buildAlterTableQuery, collectRemovableColumns,
+} from './migration';
 
 export default async function initilization(): Promise<void> {
   logger.info('Start initializing tables');
@@ -38,7 +40,15 @@ export default async function initilization(): Promise<void> {
         await query(alterTableQuery);
         await insertValues(schemata[index]);
       }
+
+      // Remove columns which are not present in schema
+      const columnsToRemove = await collectRemovableColumns(schemata[index]);
+      if (columnsToRemove) {
+        const queryData = buildAlterTableQuery('DROP COLUMN IF EXISTS', columnsToRemove);
+        const alterTableQuery = `ALTER TABLE ${schemata[index].table} ${queryData}`;
+        await query(alterTableQuery);
+      }
     }
   }
-  logger.info('Tables successfully initialized');
+  logger.info('Table(s) successfully initialized');
 }
