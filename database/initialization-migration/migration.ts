@@ -57,7 +57,7 @@ export function buildAlterTableQueryData(columnData: any[]): string {
 
 export async function insertValues(schema: Schema): Promise<void> {
   logger.info('Inserting default data');
-  const cols = schema.columns.splice(1).toString();
+  const cols = removeIdFromSchema(schema.columns).toString();
   const values = getValueQuery(schema.values);
   const insertQuery = `INSERT INTO ${schema.table}(${cols}) VALUES ${values}`;
   await query(insertQuery);
