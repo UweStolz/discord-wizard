@@ -64,12 +64,12 @@ export async function insertValues(schema: Schema): Promise<void> {
 
 export async function collectRemovableColumns(schema: Schema): Promise<any[] | null> {
   const columnsToRemove: any[] = [];
-  const cols = removeIdFromSchema(schema.columns);
   const table = await query('SELECT * FROM statistics');
   if (table) {
     const fieldNamesInDB = table?.fields.map((field) => field.name);
-    fieldNamesInDB.forEach((name: string) => {
-      const columnIndex = cols.indexOf(name);
+    const fieldNamesInDBWithoutIndex = removeIdFromSchema(fieldNamesInDB);
+    fieldNamesInDBWithoutIndex.forEach((name: string) => {
+      const columnIndex = schema.columns.indexOf(name);
       if (columnIndex === -1) {
         columnsToRemove.push(name);
       }
