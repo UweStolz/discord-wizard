@@ -23,16 +23,12 @@ export default async function initilization(): Promise<void> {
   // eslint-disable-next-line no-restricted-syntax
   for await (const [index, tableQuery] of tableQueries.entries()) {
     // Create the table for given schema, if it doesn't exist already
-    await utils.dbHelper.createTableIfNotExist(schemata[index].table, tableQuery);
+    const createTableResult = await utils.dbHelper.createTableIfNotExist(schemata[index].table, tableQuery);
 
-    // If the table is empty fill it with default data
-    const checkForData = await query(`SELECT 1 FROM ${schemata[index].table}`);
-    if (schemata[index].values.length > 0 && checkForData && checkForData?.rowCount === 0) {
-      await insertValues(schemata[index]);
-    } else {
+    // Check for further migration, if table already exists
+    if (createTableResult && createTableResult?.rowCount === null) {
       // Try to collect missing columns from the DB, if any
       const missingColumnData = await collectMissingColumns(schemata[index]);
-
       if (missingColumnData) {
         // Add the missing columns with default data from the schema
         const queryData = buildAlterTableQueryData(missingColumnData);
@@ -48,6 +44,9 @@ export default async function initilization(): Promise<void> {
         const alterTableQuery = `ALTER TABLE ${schemata[index].table} ${queryData}`;
         await query(alterTableQuery);
       }
+    } else {
+      // Insert default data, if table was just created
+      await insertValues(schemata[index]);
     }
   }
   logger.info('Table(s) successfully initialized');
