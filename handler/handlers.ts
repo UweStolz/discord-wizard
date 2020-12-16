@@ -2,7 +2,6 @@
 import { Discord } from '../client';
 import utils from '../utils';
 import { publicApis, env } from '../data';
-import request from '../request';
 import logger from '../logger';
 
 async function stats(message: Discord.Message): Promise<void> {
@@ -35,12 +34,12 @@ async function ping(message: Discord.Message): Promise<void> {
 async function cat(message: Discord.Message, argument: string | null): Promise<void> {
   if (argument) {
     if (argument === 'fact') {
-      const { fact } = await request('GET', publicApis.catFact, undefined);
+      const { fact } = await utils.helper.request('GET', publicApis.catFact, undefined);
       if (fact) {
         await message.channel.send(`FACT: "${fact}"`);
       }
     } else if (argument === 'pic') {
-      const { file } = await request('GET', publicApis.catPic, undefined);
+      const { file } = await utils.helper.request('GET', publicApis.catPic, undefined);
       if (file) {
         await message.channel.send(file);
       }
@@ -49,14 +48,14 @@ async function cat(message: Discord.Message, argument: string | null): Promise<v
 }
 
 async function quote(message: Discord.Message): Promise<void> {
-  const requestedQuote = await request('GET', publicApis.quotes[0], undefined);
+  const requestedQuote = await utils.helper.request('GET', publicApis.quotes[0], undefined);
   if (requestedQuote.length > 0) {
     await message.channel.send(`Quote: "${requestedQuote[0]}"`);
   }
 }
 
 async function insult(message: Discord.Message, argument: string | null = null): Promise<void> {
-  const insultToMember = await request('GET', publicApis.insult, undefined) || null;
+  const insultToMember = await utils.helper.request('GET', publicApis.insult, undefined) || null;
   const allMembers = await utils.discordHelper.getMemberFromServer();
 
   if (insultToMember && allMembers) {
@@ -84,14 +83,14 @@ async function insult(message: Discord.Message, argument: string | null = null):
 }
 
 async function bored(message: Discord.Message): Promise<void> {
-  const { activity } = await request('GET', publicApis.bored, undefined) || null;
+  const { activity } = await utils.helper.request('GET', publicApis.bored, undefined) || null;
   if (activity) {
     await message.channel.send(`How about..? - ${activity}`);
   }
 }
 
 async function whatIs(message: Discord.Message, argument: string|null = null): Promise<void> {
-  const owlBotResponse: owlbotResponse = await request(
+  const owlBotResponse: owlbotResponse = await utils.helper.request(
     'GET',
     `${publicApis.owlbot}${argument}`,
     {

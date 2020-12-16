@@ -3,9 +3,11 @@ import {
   getHelpMessage, getRandomNumberInRange, getRandomMagicConchAudioFile,
 } from './helper';
 import { getStatistics, updateStatForColumn, createTableIfNotExist } from './dbHelper';
+import request from './request';
 
 const utils = {
   helper: {
+    request,
     getHelpMessage,
     getRandomNumberInRange,
     getRandomMagicConchAudioFile,
