@@ -40,7 +40,7 @@ export function buildAlterTableQuery(queryPart: string, columnData: any[]): stri
   const fixedQueryPart = queryPart;
   let q = '';
   columnData.forEach((columnObj, index: number) => {
-    q += `${fixedQueryPart} ${columnObj.column}`;
+    q += `${fixedQueryPart} ${columnObj}`;
     q += commaIfItemIsForelast(index, columnData.length);
   });
   return q;
@@ -87,8 +87,8 @@ export async function collectMissingColumns(schema: Schema, fields: FieldDef[]):
     if (columnIndex === -1) {
       const obj = {
         column: name,
-        value: schema.values[index],
-        dataType: schema.datatypes[index],
+        value: schema.values[index + 1],
+        dataType: schema.datatypes[index + 1],
       };
       missingColumnData.push(obj);
     }
