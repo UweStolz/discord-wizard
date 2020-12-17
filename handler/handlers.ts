@@ -137,6 +137,46 @@ async function advice(message: Discord.Message): Promise<void> {
   }
 }
 
+async function xkdc(message: Discord.Message, argument: string | null = null): Promise<void> {
+  let comic: XkdcComic | null = null;
+  let currentComic;
+  let index = '';
+  // eslint-disable-next-line no-restricted-globals
+  if (argument && !isNaN(argument as any)) {
+    index = argument;
+  } else if (!argument) {
+    currentComic = await utils.helper.request('GET', publicApis.xkdc.current, undefined) || null;
+    index = utils.helper.getRandomNumberInRange(0, currentComic.num).toString();
+  }
+  if (index.length > 0) {
+    if (parseInt(index, 10) === 0) {
+      if (currentComic) {
+        comic = currentComic;
+      } else {
+        comic = await utils.helper.request('GET', publicApis.xkdc.current, undefined) || null;
+      }
+    } else {
+      const url = publicApis.xkdc.specific.replace('INDEX', index);
+      comic = await utils.helper.request('GET', url, undefined) || null;
+    }
+  }
+
+  if (comic) {
+    const date = new Date();
+    date.setDate(parseInt(comic.day, 10));
+    date.setMonth(parseInt(comic.month, 10));
+    date.setFullYear(parseInt(comic.year, 10));
+
+    const embed = new Discord.MessageEmbed({
+      title: comic.title.length > 0 ? comic.title : comic.safe_title,
+      description: `${comic.alt}\nLink: https://xkcd.com/${index}/`,
+    });
+    embed.setTimestamp(date);
+    embed.setImage(comic.img);
+    await message.channel.send(embed);
+  }
+}
+
 async function defaultHandler(message: Discord.Message): Promise<void> {
   const prefix = env.commandPrefix || '/wizard';
   const defaultMessage = `Could not find command, use '${prefix} help' to display all available commands.`;
@@ -149,6 +189,7 @@ interface Handlers {
 }
 
 const handlers: Handlers = {
+  xkdc,
   advice,
   stats,
   help,

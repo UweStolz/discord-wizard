@@ -2,6 +2,7 @@
 import * as env from './env';
 
 const commands = {
+  xkdc: '[argument] Get either a random or a specific comic',
   advice: 'Display a random advice slip',
   conch: 'Play a random clip from the magic conch',
   stats: 'Display statistics for all available commands',
@@ -21,6 +22,10 @@ const publicApis = {
   insult: 'https://evilinsult.com/generate_insult.php?lang=en&type=json',
   bored: 'https://www.boredapi.com/api/activity/',
   owlbot: 'https://owlbot.info/api/v4/dictionary/',
+  xkdc: {
+    current: 'http://xkcd.com/info.0.json',
+    specific: 'http://xkcd.com/INDEX/info.0.json',
+  },
   quotes: [
     {
       url: 'https://ron-swanson-quotes.herokuapp.com/v2/quotes',
