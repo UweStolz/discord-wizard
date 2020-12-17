@@ -59,3 +59,7 @@ A list of all used public apis can be found in the `publicApis` object [inside](
 ## License
 
 [APACHE 2.0](LICENSE.md)
+
+---
+
+Happy hacking 😀  
