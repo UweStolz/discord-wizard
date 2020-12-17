@@ -48,9 +48,15 @@ async function cat(message: Discord.Message, argument: string | null): Promise<v
 }
 
 async function quote(message: Discord.Message): Promise<void> {
-  const requestedQuote = await utils.helper.request('GET', publicApis.quotes[0], undefined);
-  if (requestedQuote.length > 0) {
-    await message.channel.send(`Quote: "${requestedQuote[0]}"`);
+  const quoteApiCount = publicApis.quotes.length;
+  const randomNumber = utils.helper.getRandomNumberInRange(0, quoteApiCount - 1);
+  const requestedQuote = await utils.helper.request('GET', publicApis.quotes[1].url, undefined);
+  if (
+    (Array.isArray(requestedQuote) && requestedQuote.length > 0)
+    || (requestedQuote.constructor === Object && Object.keys(requestedQuote).length > 0)
+  ) {
+    const quoteText = publicApis.quotes[randomNumber].response(requestedQuote);
+    await message.channel.send(`Quote: "${quoteText}"`);
   }
 }
 

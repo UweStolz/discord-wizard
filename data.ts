@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as env from './env';
 
 const commands = {
@@ -19,7 +20,14 @@ const publicApis = {
   bored: 'https://www.boredapi.com/api/activity/',
   owlbot: 'https://owlbot.info/api/v4/dictionary/',
   quotes: [
-    'https://ron-swanson-quotes.herokuapp.com/v2/quotes',
+    {
+      url: 'https://ron-swanson-quotes.herokuapp.com/v2/quotes',
+      response: (response: any): string => response[0],
+    },
+    {
+      url: 'https://quote-garden.herokuapp.com/api/v3/quotes/random',
+      response: (response: any): string => response.data[0].quoteText,
+    },
   ],
 };
 
