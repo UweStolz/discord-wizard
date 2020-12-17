@@ -32,7 +32,9 @@ export default async function setupDatabase(): Promise<PoolClient|null> {
     if (!env.disableDB) {
       logger.info('Start database initialization');
       await startDatabaseClient();
-      await initilization();
+      if (!env.disableMigrationOfDB) {
+        await initilization();
+      }
       client = await getClient();
       clientListener(client);
     }
