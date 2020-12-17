@@ -2,7 +2,9 @@ import logger from '../../logger';
 import schemata from '../schemata';
 import query from '../query';
 import utils from '../../utils';
-import { buildAlterTableQueryData, collectMissingColumns, insertValues } from './migration';
+import {
+  buildAlterTableQueryData, collectMissingColumns, insertValues, buildAlterTableQuery, collectRemovableColumns,
+} from './migration';
 
 export default async function initilization(): Promise<void> {
   logger.info('Start initializing tables');
@@ -21,24 +23,36 @@ export default async function initilization(): Promise<void> {
   // eslint-disable-next-line no-restricted-syntax
   for await (const [index, tableQuery] of tableQueries.entries()) {
     // Create the table for given schema, if it doesn't exist already
-    await utils.dbHelper.createTableIfNotExist(schemata[index].table, tableQuery);
+    const createTableResult = await utils.dbHelper.createTableIfNotExist(schemata[index].table, tableQuery);
 
-    // If the table is empty fill it with default data
-    const checkForData = await query(`SELECT 1 FROM ${schemata[index].table}`);
-    if (schemata[index].values.length > 0 && checkForData && checkForData?.rowCount === 0) {
-      await insertValues(schemata[index]);
-    } else {
-      // Try to collect missing columns from the DB, if any
-      const missingColumnData = await collectMissingColumns(schemata[index]);
-
-      if (missingColumnData) {
+    // Check for further migration, if table already exists
+    if (createTableResult && createTableResult?.rowCount === null) {
+      const table = await query(`SELECT * FROM ${schemata[index].table}`);
+      if (table) {
+        // Try to collect missing columns from the DB, if any
+        const missingColumnData = await collectMissingColumns(schemata[index], table.fields);
+        if (missingColumnData) {
         // Add the missing columns with default data from the schema
-        const queryData = buildAlterTableQueryData(missingColumnData);
-        const alterTableQuery = `ALTER TABLE ${schemata[index].table} ADD COLUMN ${queryData}`;
-        await query(alterTableQuery);
-        await insertValues(schemata[index]);
+          const queryData = buildAlterTableQueryData(missingColumnData);
+          const alterTableQuery = `ALTER TABLE ${schemata[index].table} ADD COLUMN ${queryData}`;
+          await query(alterTableQuery);
+          await insertValues(schemata[index]);
+        }
+
+        // Remove columns which are not present in schema
+        const columnsToRemove = await collectRemovableColumns(schemata[index], table.fields);
+        if (columnsToRemove) {
+          const queryData = buildAlterTableQuery('DROP COLUMN IF EXISTS', columnsToRemove);
+          const alterTableQuery = `ALTER TABLE ${schemata[index].table} ${queryData}`;
+          await query(alterTableQuery);
+        }
+      } else {
+        logger.error(`Could not get data during migration, for table: ${schemata[index].table}`);
       }
+    } else {
+      // Insert default data, if table was just created
+      await insertValues(schemata[index]);
     }
   }
-  logger.info('Tables successfully initialized');
+  logger.info('Table(s) successfully initialized');
 }

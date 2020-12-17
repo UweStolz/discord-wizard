@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import logger, { objLogger } from './logger';
+import logger, { objLogger } from '../logger';
 
 type RequestType = 'GET' | 'POST';
 
