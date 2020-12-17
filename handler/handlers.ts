@@ -130,6 +130,13 @@ async function conch(message: Discord.Message): Promise<void> {
   await utils.discordHelper.sendToVoiceChannel(message, filePath);
 }
 
+async function advice(message: Discord.Message): Promise<void> {
+  const { slip } = await utils.helper.request('GET', publicApis.advice, undefined) || null;
+  if (slip) {
+    await message.channel.send(slip.advice);
+  }
+}
+
 async function defaultHandler(message: Discord.Message): Promise<void> {
   const prefix = env.commandPrefix || '/wizard';
   const defaultMessage = `Could not find command, use '${prefix} help' to display all available commands.`;
@@ -142,6 +149,7 @@ interface Handlers {
 }
 
 const handlers: Handlers = {
+  advice,
   stats,
   help,
   ping,

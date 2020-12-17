@@ -2,6 +2,7 @@
 import * as env from './env';
 
 const commands = {
+  advice: 'Display a random advice slip',
   conch: 'Play a random clip from the magic conch',
   stats: 'Display statistics for all available commands',
   help: 'Display all available commands',
@@ -14,6 +15,7 @@ const commands = {
 };
 
 const publicApis = {
+  advice: 'https://api.adviceslip.com/advice',
   catPic: 'https://aws.random.cat/meow',
   catFact: 'https://catfact.ninja/fact',
   insult: 'https://evilinsult.com/generate_insult.php?lang=en&type=json',

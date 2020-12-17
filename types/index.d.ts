@@ -21,7 +21,8 @@ type Command =
   'quote' |
   'insult' |
   'bored' |
-  'whatIs'
+  'whatIs' |
+  'advice'
 ;
 
 interface ParsedInput {

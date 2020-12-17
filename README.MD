@@ -13,6 +13,7 @@ Just another nonsense discord bot
 | insult | Insult one of the members, either randomly or targeted | Optional |
 | bored | Find a random activity to fight boredom | - |
 | whatIs | Definitions with example sentence and photo if available | Mandatory |
+| advice | Display a random advice slip | - |
 | help | Display all available commands | - |
 
 ## Configuration
