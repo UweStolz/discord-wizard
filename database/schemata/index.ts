@@ -4,7 +4,7 @@ import logger, { objLogger } from '../../logger';
 
 export default async function getSchemata(): Promise<string[]> {
   const schemata: string[] = [];
-  const schemataPath = `${resolve()}/database/schemata`;
+  const schemataPath = `${resolve()}/database/schemata/queries`;
 
   try {
     const files = await readdir(schemataPath, { encoding: 'utf8' });
