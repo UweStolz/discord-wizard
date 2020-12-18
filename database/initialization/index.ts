@@ -9,7 +9,6 @@ export default async function initilization(): Promise<void> {
   logger.info('Start initializing schemata');
   const schemataCount = schemata.length;
 
-  logger.info(schemataCount);
   if (schemataCount > 0) {
     let count = 1;
     // eslint-disable-next-line no-restricted-syntax
