@@ -23,24 +23,30 @@ Just another nonsense discord bot
 
 Either place a `.env` file at root of the project or export the variables directly.
 
+**Mandatory**
 - TOKEN
   - The API key for your Discord bot
-- OWLBOT
-  - An API key for the [Owlbot dictionary API](https://owlbot.info/)
 - SERVERID
   - The ID of your server the bot resides in
-- DATABASE_URL
-  - The URL to your postgres DB
+
+**Optional**
+- OWLBOT
+  - An API key for the [Owlbot dictionary API](https://owlbot.info/)
+  - Only needed, if you want to use the `whatIs` command
 - C_PREFIX
   -  How to call the bot in a text channel, default: `/wizard`
 - C_ALIAS
   - The alias for the command, default: `/w`
+- DATABASE_URL
+  - The URL to your postgres DB
 - DISABLE_DB
   - Explicitly disables the DB
+- DISABLE_DB_INITILIZATION
+  - Explicitly disables the initilization of the DB schemata
 
 ## Public APIs
 
-A list of all used public apis can be found in the `publicApis` object [inside](https://github.com/UweStolz/discord-wizard/blob/da730f3b8bb170503c96ad8bc500fd4a374a7841/data.ts#L15) of the `data.ts` file.  
+A list of all used public apis can be found in the `publicApis` object [inside](https://github.com/UweStolz/discord-wizard/blob/master/data.ts) of the `data.ts` file.  
 
 
 ---  
@@ -53,3 +59,7 @@ A list of all used public apis can be found in the `publicApis` object [inside](
 ## License
 
 [APACHE 2.0](LICENSE.md)
+
+---
+
+Happy hacking 😀  
