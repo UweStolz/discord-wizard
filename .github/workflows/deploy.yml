@@ -41,7 +41,7 @@ jobs:
     - name: Deploy
       uses: s0/git-publish-subdir-action@develop
       env:
-        REPO: git@github.com:UweStolz/discord.git
+        REPO: git@github.com:UweStolz/discord-wizard.git
         BRANCH: build
         FOLDER: built
         SSH_PRIVATE_KEY: ${{ secrets.BUILD_HEROKU_DEPLOY_KEY }}
