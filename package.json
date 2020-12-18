@@ -1,0 +1,46 @@
+{
+  "name": "discord-wizard",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "license": "UNLICENSED",
+  "engines": {
+    "node": "14.15.x",
+    "yarn": "1.22.x"
+  },
+  "scripts": {
+    "build:dev": "yarn run tsc -p ./tsconfig.json",
+    "start:dev": "yarn ts-node index.ts",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@discordjs/opus": "^0.3.3",
+    "axios": "^0.21.0",
+    "bufferutil": "^4.0.2",
+    "discord.js": "^12.5.1",
+    "dotenv": "^8.2.0",
+    "erlpack": "^0.1.3",
+    "ffmpeg-static": "^4.2.7",
+    "fs-extra": "^9.0.1",
+    "libsodium-wrappers": "^0.7.8",
+    "pg": "^8.5.1",
+    "quickchart-js": "^1.0.5",
+    "tslib": "^2.0.3",
+    "utf-8-validate": "^5.0.3",
+    "winston": "^3.3.3",
+    "zlib-sync": "^0.1.7"
+  },
+  "devDependencies": {
+    "@types/chart.js": "^2.9.28",
+    "@types/fs-extra": "^9.0.5",
+    "@types/node": "^14.14.10",
+    "@types/pg": "^7.14.7",
+    "@types/ws": "^7.4.0",
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
+    "eslint": "^7.15.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "ts-node": "^9.0.0"
+  }
+}
