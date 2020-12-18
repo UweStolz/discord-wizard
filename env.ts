@@ -7,7 +7,7 @@ const databaseUrl = process.env.DATABASE_URL;
 const commandPrefix = process.env.C_PREFIX;
 const commandPrefixAlias = process.env.C_ALIAS;
 const disableDB = !!process.env.DISABLE_DB;
-const disableMigrationOfDB = !!process.env.DISABLE_DB_MIGRATION;
+const disableInitilizationOfDB = !!process.env.DISABLE_DB_INITILIZATION;
 
 export {
   token,
@@ -17,5 +17,5 @@ export {
   commandPrefix,
   commandPrefixAlias,
   disableDB,
-  disableMigrationOfDB,
+  disableInitilizationOfDB,
 };

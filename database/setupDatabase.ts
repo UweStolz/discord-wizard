@@ -2,7 +2,7 @@
 import { Pool, PoolClient } from './pg';
 import { env } from '../data';
 import listener, { clientListener } from './listener';
-import initilization from './initialization-migration/initilization';
+import initilization from './initialization';
 import logger, { objLogger } from '../logger';
 
 let pool: Pool;
@@ -32,7 +32,7 @@ export default async function setupDatabase(): Promise<PoolClient|null> {
     if (!env.disableDB) {
       logger.info('Start database initialization');
       await startDatabaseClient();
-      if (!env.disableMigrationOfDB) {
+      if (!env.disableInitilizationOfDB) {
         await initilization();
       }
       client = await getClient();

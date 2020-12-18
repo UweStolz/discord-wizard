@@ -41,8 +41,8 @@ Either place a `.env` file at root of the project or export the variables direct
   - The URL to your postgres DB
 - DISABLE_DB
   - Explicitly disables the DB
-- DISABLE_DB_MIGRATION
-  - Explicitly disables the DB migration
+- DISABLE_DB_INITILIZATION
+  - Explicitly disables the initilization of the DB schemata
 
 ## Public APIs
 
