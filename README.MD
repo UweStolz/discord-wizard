@@ -1,6 +1,6 @@
 # Discord wizard
 
-Just another nonsense discord bot
+Just another nonsense discord bot.
 
 ## Commands
 
