@@ -11,7 +11,11 @@ async function stats(message: Discord.Message): Promise<void> {
     if (chart) {
       const attachment = new Discord.MessageAttachment(chart);
       embed.attachFiles([attachment]);
-      await message.channel.send(embed);
+      if (embed.length > 0) {
+        await message.channel.send(embed);
+      } else {
+        await message.channel.send('Could not get, or send statistics!');
+      }
     }
   } else {
     await message.channel.send('Could not get statistics, the DB is disabled!');
