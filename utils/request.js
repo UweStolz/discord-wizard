@@ -6,7 +6,7 @@ const axios_1 = tslib_1.__importDefault(require("axios"));
 const logger_1 = tslib_1.__importStar(require("../logger"));
 function getResponseData(response) {
     let data = null;
-    if ((response === null || response === void 0 ? void 0 : response.status) === 200) {
+    if (response?.status === 200) {
         data = response.data;
     }
     return data;

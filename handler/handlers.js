@@ -8,12 +8,18 @@ const data_1 = require("../data");
 const logger_1 = tslib_1.__importDefault(require("../logger"));
 async function stats(message) {
     if (!data_1.env.disableDB) {
-        const embed = new client_1.Discord.MessageEmbed();
         const chart = await utils_1.default.dbHelper.getStatistics();
         if (chart) {
-            const attachment = new client_1.Discord.MessageAttachment(chart);
-            embed.attachFiles([attachment]);
-            await message.channel.send(embed);
+            await message.channel.send({
+                files: [
+                    {
+                        attachment: chart,
+                    },
+                ],
+            });
+        }
+        else {
+            await message.channel.send('Could not get, or send statistics!');
         }
     }
     else {
@@ -61,7 +67,7 @@ async function insult(message, argument = null) {
     const insultToMember = await utils_1.default.helper.request('GET', data_1.publicApis.insult, undefined) || null;
     const allMembers = await utils_1.default.discordHelper.getMemberFromServer();
     if (insultToMember && allMembers) {
-        const members = allMembers === null || allMembers === void 0 ? void 0 : allMembers.filter((m) => (m.displayName !== 'wizard'));
+        const members = allMembers?.filter((m) => (m.displayName !== 'wizard'));
         const utf8ConvertedInsult = Buffer.from(insultToMember.insult).toString();
         let member;
         if (argument) {
@@ -92,7 +98,6 @@ async function bored(message) {
     }
 }
 async function whatIs(message, argument = null) {
-    var _a, _b, _c, _d;
     const owlBotResponse = await utils_1.default.helper.request('GET', `${data_1.publicApis.owlbot}${argument}`, {
         headers: {
             Authorization: `Token ${data_1.env.owlBotToken}`,
@@ -100,16 +105,16 @@ async function whatIs(message, argument = null) {
     });
     if (owlBotResponse) {
         const definitionObj = owlBotResponse.definitions[0];
-        const emoji = definitionObj === null || definitionObj === void 0 ? void 0 : definitionObj.emoji;
+        const emoji = definitionObj?.emoji;
         let wordDescription = '';
-        wordDescription += ((_a = definitionObj.definition) === null || _a === void 0 ? void 0 : _a.length) > 0 ? `Definition: ${definitionObj.definition} ${emoji || ''}\n` : '';
-        wordDescription += ((_b = definitionObj.type) === null || _b === void 0 ? void 0 : _b.length) > 0 ? `Type: ${definitionObj.type}\n` : '';
-        wordDescription += ((_c = definitionObj.example) === null || _c === void 0 ? void 0 : _c.length) > 0 ? `Example: ${definitionObj.example}\n` : '';
+        wordDescription += definitionObj.definition?.length > 0 ? `Definition: ${definitionObj.definition} ${emoji || ''}\n` : '';
+        wordDescription += definitionObj.type?.length > 0 ? `Type: ${definitionObj.type}\n` : '';
+        wordDescription += definitionObj.example?.length > 0 ? `Example: ${definitionObj.example}\n` : '';
         const embed = new client_1.Discord.MessageEmbed({
             title: owlBotResponse.word,
             description: wordDescription,
         });
-        if (((_d = definitionObj.image_url) === null || _d === void 0 ? void 0 : _d.length) > 0) {
+        if (definitionObj.image_url?.length > 0) {
             embed.setImage(definitionObj.image_url);
         }
         await message.channel.send(embed);

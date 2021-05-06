@@ -6,11 +6,10 @@ const client_1 = require("../client");
 const data_1 = require("../data");
 const logger_1 = tslib_1.__importStar(require("../logger"));
 async function sendToVoiceChannel(message, filePath) {
-    var _a;
     if (message) {
         if (!message.guild)
             return;
-        if ((_a = message.member) === null || _a === void 0 ? void 0 : _a.voice.channel) {
+        if (message.member?.voice.channel) {
             const connection = await message.member.voice.channel.join();
             logger_1.default.info(`Playing file: ${filePath}`);
             const dispatcher = connection.play(filePath);
@@ -35,7 +34,7 @@ async function getMemberFromServer() {
     const client = await client_1.getClient();
     let membersArr = null;
     const guild = client.guilds.cache.get(data_1.env.serverId);
-    const members = guild === null || guild === void 0 ? void 0 : guild.members.cache;
+    const members = guild?.members.cache;
     if (members) {
         membersArr = members.array();
     }
