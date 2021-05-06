@@ -1,6 +1,18 @@
 import logger from '../../logger';
 import getSchemata from '../schemata';
 import query from '../query';
+import { commands } from '../../data';
+
+async function createDefaultRowsForStatistics(): Promise<void> {
+  const commandNames = Object.keys(commands) || [];
+  if (commandNames.length > 0) {
+    logger.info('Initialize default rows for statistics');
+    // eslint-disable-next-line no-restricted-syntax
+    for await (const name of commandNames) {
+      await query(`INSERT INTO statistics(id, name, count) VALUES(DEFAULT, '${name}', DEFAULT) ON CONFLICT DO NOTHING;`);
+    }
+  }
+}
 
 export default async function initilization(): Promise<void> {
   logger.info('Getting schemata');
@@ -18,5 +30,7 @@ export default async function initilization(): Promise<void> {
       count += 1;
     }
     logger.info('Schemata successfully initialized');
+
+    await createDefaultRowsForStatistics();
   }
 }

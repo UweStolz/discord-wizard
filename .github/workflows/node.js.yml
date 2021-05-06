@@ -3,6 +3,8 @@ name: Install and build
 on:
   pull_request_target:
     branches: [ heroku ]
+  push:
+    branches: [ main ]  
 jobs:
   build:
     runs-on: ubuntu-latest

@@ -6,12 +6,17 @@ import logger from '../logger';
 
 async function stats(message: Discord.Message): Promise<void> {
   if (!env.disableDB) {
-    const embed = new Discord.MessageEmbed();
     const chart = await utils.dbHelper.getStatistics();
     if (chart) {
-      const attachment = new Discord.MessageAttachment(chart);
-      embed.attachFiles([attachment]);
-      await message.channel.send(embed);
+      await message.channel.send({
+        files: [
+          {
+            attachment: chart,
+          },
+        ],
+      });
+    } else {
+      await message.channel.send('Could not get, or send statistics!');
     }
   } else {
     await message.channel.send('Could not get statistics, the DB is disabled!');
