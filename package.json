@@ -1,6 +1,6 @@
 {
   "name": "discord-wizard",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "private": true,
   "license": "UNLICENSED",
@@ -18,7 +18,7 @@
     "axios": "^0.21.1",
     "bufferutil": "^4.0.3",
     "discord.js": "^12.5.3",
-    "dotenv": "^9.0.0",
+    "dotenv": "^10.0.0",
     "erlpack": "^0.1.3",
     "ffmpeg-static": "^4.3.0",
     "fs-extra": "^10.0.0",
@@ -33,14 +33,14 @@
   "devDependencies": {
     "@types/chart.js": "^2.9.32",
     "@types/fs-extra": "^9.0.11",
-    "@types/node": "^15.0.2",
+    "@types/node": "^15.6.0",
     "@types/pg": "^7.14.11",
-    "@types/ws": "^7.4.2",
-    "@typescript-eslint/eslint-plugin": "^4.22.1",
-    "@typescript-eslint/parser": "^4.22.1",
-    "eslint": "^7.25.0",
+    "@types/ws": "^7.4.4",
+    "@typescript-eslint/eslint-plugin": "^4.24.0",
+    "@typescript-eslint/parser": "^4.24.0",
+    "eslint": "^7.27.0",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import": "^2.23.3",
     "ts-node": "^9.1.1"
   }
 }

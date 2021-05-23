@@ -33,11 +33,17 @@ const publicApis = {
     quotes: [
         {
             url: 'https://ron-swanson-quotes.herokuapp.com/v2/quotes',
-            response: (response) => response[0],
+            response: (response) => (response?.length > 0 ? response[0] : ''),
         },
         {
             url: 'https://quote-garden.herokuapp.com/api/v3/quotes/random',
-            response: (response) => response.data[0].quoteText,
+            response: (response) => {
+                let quote = '';
+                if (response && response.statusCode === 200) {
+                    quote = response.data[0].quoteText;
+                }
+                return quote;
+            },
         },
     ],
 };
