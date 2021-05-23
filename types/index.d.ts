@@ -1,3 +1,40 @@
+interface CatPicResponse {
+  'file': string;
+}
+
+interface CatFactResponse {
+  'fact': string;
+  'length': number;
+}
+
+interface AdviceResponse {
+  'slip': {
+    'id': number;
+    'advice': string;
+  }
+}
+
+interface BoredResponse {
+  'activity': string;
+  'type': string;
+  'participants': number;
+  'price': number;
+  'link': number;
+  'key': string;
+  'accessibility': number;
+}
+
+interface InsultResponse {
+  'number': string;
+  'language': string;
+   'insult': string;
+   'created': string;
+  'shown': string;
+  'createdby': string;
+  'active': string;
+  'comment': string;
+}
+
 interface QuoteGardenResponseData {
   _id: string;
   quoteText: string;
@@ -18,7 +55,7 @@ interface QuoteGardenResponse {
       data: QuoteGardenResponseData[]
 }
 
-interface owlbotResponse {
+interface OwlbotResponse {
     'definitions': [
         {
           'type': string,
