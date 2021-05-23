@@ -1,3 +1,23 @@
+interface QuoteGardenResponseData {
+  _id: string;
+  quoteText: string;
+  quoteAuthor: string;
+  quoteGenre: string;
+  __v: string;
+}
+
+interface QuoteGardenResponse {
+      statusCode: 200;
+      message: string;
+      pagination: {
+        currentPage: number;
+        nextPage: number | null;
+        totalPages: number;
+      },
+      totalQuotes: number;
+      data: QuoteGardenResponseData[]
+}
+
 interface owlbotResponse {
     'definitions': [
         {
