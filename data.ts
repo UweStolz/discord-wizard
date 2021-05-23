@@ -13,6 +13,7 @@ const commands = {
   insult: '[argument] - Insult one of the members, either randomly or targeted',
   bored: 'Find a random activity to fight boredom',
   whatIs: '<argument> - Definitions with example sentence and photo if available',
+  number: '[random|argument] - Get trivia for a given number, a random number, or the number of the day',
 };
 
 const publicApis = {
@@ -22,6 +23,7 @@ const publicApis = {
   insult: 'https://evilinsult.com/generate_insult.php?lang=en&type=json',
   bored: 'https://www.boredapi.com/api/activity/',
   owlbot: 'https://owlbot.info/api/v4/dictionary/',
+  number: 'http://numbersapi.com/',
   xkdc: {
     current: 'http://xkcd.com/info.0.json',
     specific: 'http://xkcd.com/INDEX/info.0.json',

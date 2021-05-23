@@ -16,6 +16,7 @@ Just another nonsense discord bot
 | advice | Display a random advice slip | - |
 | help | Display all available commands | - |
 | xkdc | Get a xkdc comic | [Number] |
+| number | Get trivia for a given number, a random number, or the current date | [random|number] |
 
 ## Configuration
 
