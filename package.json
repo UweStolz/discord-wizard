@@ -9,7 +9,8 @@
     "yarn": "1.22.x"
   },
   "scripts": {
-    "build:dev": "yarn run tsc -p ./tsconfig.json",
+    "build": "yarn run tsc -p ./tsconfig.json",
+    "build:dev": "yarn run tsc -w -p ./tsconfig.json",
     "start:dev": "yarn ts-node index.ts",
     "start": "node index.js"
   },
