@@ -39,12 +39,12 @@ async function ping(message: Discord.Message): Promise<void> {
 async function cat(message: Discord.Message, argument: string | null): Promise<void> {
   if (argument) {
     if (argument === 'fact') {
-      const { fact } = await utils.helper.request('GET', publicApis.catFact, undefined);
+      const { fact } = await utils.helper.request('GET', publicApis.catFact, undefined) as CatFactResponse;
       if (fact) {
         await message.channel.send(`FACT: "${fact}"`);
       }
     } else if (argument === 'pic') {
-      const { file } = await utils.helper.request('GET', publicApis.catPic, undefined);
+      const { file } = await utils.helper.request('GET', publicApis.catPic, undefined) as CatPicResponse;
       if (file) {
         await message.channel.send(file);
       }
@@ -66,7 +66,7 @@ async function quote(message: Discord.Message): Promise<void> {
 }
 
 async function insult(message: Discord.Message, argument: string | null = null): Promise<void> {
-  const insultToMember = await utils.helper.request('GET', publicApis.insult, undefined) || null;
+  const insultToMember = await utils.helper.request('GET', publicApis.insult, undefined) as InsultResponse || null;
   const allMembers = await utils.discordHelper.getMemberFromServer();
 
   if (insultToMember && allMembers) {
@@ -94,14 +94,14 @@ async function insult(message: Discord.Message, argument: string | null = null):
 }
 
 async function bored(message: Discord.Message): Promise<void> {
-  const { activity } = await utils.helper.request('GET', publicApis.bored, undefined) || null;
+  const { activity } = await utils.helper.request('GET', publicApis.bored, undefined) as BoredResponse || null;
   if (activity) {
     await message.channel.send(`How about..? - ${activity}`);
   }
 }
 
 async function whatIs(message: Discord.Message, argument: string|null = null): Promise<void> {
-  const owlBotResponse: owlbotResponse = await utils.helper.request(
+  const owlBotResponse: OwlbotResponse = await utils.helper.request(
     'GET',
     `${publicApis.owlbot}${argument}`,
     {
@@ -136,7 +136,7 @@ async function conch(message: Discord.Message): Promise<void> {
 }
 
 async function advice(message: Discord.Message): Promise<void> {
-  const { slip } = await utils.helper.request('GET', publicApis.advice, undefined) || null;
+  const { slip } = await utils.helper.request('GET', publicApis.advice, undefined) as AdviceResponse || null;
   if (slip) {
     await message.channel.send(slip.advice);
   }

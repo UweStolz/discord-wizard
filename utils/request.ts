@@ -22,8 +22,8 @@ async function POST(url: string, options: AxiosRequestConfig | undefined): Promi
   return getResponseData(response);
 }
 
-export default async function request(type: RequestType, url: string, options: AxiosRequestConfig | undefined = undefined): Promise<any | null> {
-  let response: AxiosResponse<any>|null = null;
+export default async function request(type: RequestType, url: string, options: AxiosRequestConfig | undefined = undefined): Promise<any|null> {
+  let response: any|null = null;
   try {
     switch (type) {
       case 'GET':
