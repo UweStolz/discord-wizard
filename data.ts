@@ -14,6 +14,7 @@ const commands = {
   bored: 'Find a random activity to fight boredom',
   whatIs: '<argument> - Definitions with example sentence and photo if available',
   number: '[random|argument] - Get trivia for a given number, a random number, or the number of the day',
+  iss: 'Show the current location of the ISS',
 };
 
 const publicApis = {
@@ -24,6 +25,7 @@ const publicApis = {
   bored: 'https://www.boredapi.com/api/activity/',
   owlbot: 'https://owlbot.info/api/v4/dictionary/',
   number: 'http://numbersapi.com/',
+  iss: 'http://api.open-notify.org/iss-now.json',
   xkdc: {
     current: 'http://xkcd.com/info.0.json',
     specific: 'http://xkcd.com/INDEX/info.0.json',

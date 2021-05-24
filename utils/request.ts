@@ -8,6 +8,7 @@ function getResponseData(response: AxiosResponse<any>): AxiosResponse<any>|null 
   let data: AxiosResponse<any>|null = null;
   if (response?.status === 200) {
     data = response.data;
+    objLogger.verbose(data);
   }
   return data;
 }

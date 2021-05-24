@@ -36,6 +36,23 @@ async function ping(message: Discord.Message): Promise<void> {
   await message.channel.send('pong');
 }
 
+async function iss(message: Discord.Message): Promise<void> {
+  const { iss_position, timestamp } = await utils.helper.request('GET', publicApis.iss, undefined) as IssResponse;
+  if (iss_position) {
+    const { latitude, longitude } = iss_position;
+    const image = await utils.dependencyHelper.buildMap(latitude, longitude, timestamp);
+    if (image) {
+      await message.channel.send({
+        files: [
+          {
+            attachment: image,
+          },
+        ],
+      });
+    }
+  }
+}
+
 async function number(message: Discord.Message, argument: string | null): Promise<void> {
   let endpoint = '';
   let url = `${publicApis.number}`;
@@ -238,6 +255,7 @@ const handlers: Handlers = {
   whatIs,
   conch,
   number,
+  iss,
   defaultHandler,
 };
 

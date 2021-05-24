@@ -3,6 +3,7 @@ import { resolve } from 'path';
 import { commands } from '../data';
 
 const magicConchAudioFiles: string[] = [];
+const rootDir = resolve();
 let helpMessage = '';
 
 export function getHelpMessage(): string {
@@ -24,7 +25,6 @@ export function getRandomNumberInRange(min: number, max: number): number {
 
 export function getRandomMagicConchAudioFile(): string {
   if (magicConchAudioFiles.length === 0) {
-    const rootDir = resolve();
     const audioFilesDir = `${rootDir}/assets/audio/magicConch`;
     readdirSync(audioFilesDir).forEach((path) => {
       magicConchAudioFiles.push(`${audioFilesDir}/${path}`);
@@ -35,3 +35,5 @@ export function getRandomMagicConchAudioFile(): string {
   const randomFile = magicConchAudioFiles[randomNumber];
   return randomFile;
 }
+
+export { rootDir };
