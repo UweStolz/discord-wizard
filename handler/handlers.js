@@ -5,7 +5,7 @@ const tslib_1 = require("tslib");
 const client_1 = require("../client");
 const utils_1 = tslib_1.__importDefault(require("../utils"));
 const data_1 = require("../data");
-const logger_1 = tslib_1.__importDefault(require("../logger"));
+const logger_1 = tslib_1.__importStar(require("../logger"));
 async function stats(message) {
     if (!data_1.env.disableDB) {
         const chart = await utils_1.default.dbHelper.getStatistics();
@@ -37,6 +37,53 @@ async function help(message) {
 async function ping(message) {
     await message.channel.send('pong');
 }
+async function iss(message) {
+    const { iss_position, timestamp } = await utils_1.default.helper.request('GET', data_1.publicApis.iss, undefined);
+    if (iss_position) {
+        const { latitude, longitude } = iss_position;
+        const image = await utils_1.default.dependencyHelper.buildMap(latitude, longitude, timestamp);
+        if (image) {
+            await message.channel.send({
+                files: [
+                    {
+                        attachment: image,
+                    },
+                ],
+            });
+        }
+    }
+}
+async function number(message, argument) {
+    let endpoint = '';
+    let url = `${data_1.publicApis.number}`;
+    if (argument) {
+        endpoint = utils_1.default.helper.getRandomNumberInRange(0, 1) === 0 ? 'math' : 'trivia';
+        let arg;
+        if (argument === 'random') {
+            url += 'random/';
+        }
+        else {
+            try {
+                arg = parseInt(argument, 10);
+                url += `${arg}/`;
+            }
+            catch {
+                logger_1.default.warn(`Could not parse argument: ${argument}`);
+            }
+        }
+    }
+    else {
+        const date = new Date();
+        const day = date.getUTCDate();
+        const month = date.getUTCMonth() + 1;
+        url += `${day}/${month}`;
+        endpoint = '/date';
+    }
+    const result = await utils_1.default.helper.request('GET', `${url}${endpoint}`, undefined);
+    if (result) {
+        await message.channel.send(`"${result}"`);
+    }
+}
 async function cat(message, argument) {
     if (argument) {
         if (argument === 'fact') {
@@ -67,8 +114,10 @@ async function insult(message, argument = null) {
     const insultToMember = await utils_1.default.helper.request('GET', data_1.publicApis.insult, undefined) || null;
     const allMembers = await utils_1.default.discordHelper.getMemberFromServer();
     if (insultToMember && allMembers) {
-        const members = allMembers?.filter((m) => (m.displayName !== 'wizard'));
+        const members = allMembers?.filter((m) => (m.displayName !== 'wizard' && m.presence.status !== 'offline'));
         const utf8ConvertedInsult = Buffer.from(insultToMember.insult).toString();
+        logger_1.default.verbose(`Insult: ${utf8ConvertedInsult}`);
+        logger_1.objLogger.debug(members);
         let member;
         if (argument) {
             const validatedMember = utils_1.default.discordHelper.validateMember(argument, members);
@@ -187,6 +236,8 @@ const handlers = {
     bored,
     whatIs,
     conch,
+    number,
+    iss,
     defaultHandler,
 };
 exports.default = handlers;

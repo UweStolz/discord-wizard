@@ -487,13 +487,13 @@
         "affectsGlobalScope": true
       },
       "../env.ts": {
-        "version": "e4bba80e7b2e624851fe9813076742574f28e85acf5ac5991ae86937c4e77aef",
-        "signature": "db82a52564b2a64d673d6b44e84ffb350abb54190289b66db15d431b4dbaf63f",
+        "version": "e030fe973c7615cc3ff8a8d4afc96b238a02976b005ca1d3b4bb86ec77c63c88",
+        "signature": "fc662be703bef2aa55dc6056afdd52b621ef421ea7fd3b5a50d7b121a0cc095d",
         "affectsGlobalScope": false
       },
       "../data.ts": {
-        "version": "b3bbbcc043149890081e8f0adb10dce68d652395853753e1f5eeb2c8b0c3a486",
-        "signature": "e51a59a03e76c3f396b7bc8a5dda01ffeb5a0a9edafdff717ce2d107b9a9a9be",
+        "version": "df4522240eaeb1b06c105e79f4b7a06f57bc370c5b81d32147267a8db2199411",
+        "signature": "f751e80593694ea19c0a6624f0eb6af7c0ff07218d05dd2856c4a0e96f79aa25",
         "affectsGlobalScope": false
       },
       "../client.ts": {
@@ -527,7 +527,7 @@
         "affectsGlobalScope": false
       },
       "../logger.ts": {
-        "version": "7b7621ec9733c916ccdddfdadfcfa879314ec25a72373f513e69b1a84789e285",
+        "version": "bd76dbdea6b38f8adce7a4147a49a7a829f65ac5f2a0add7620bebec43b25d18",
         "signature": "6b2756bdd3b47473baf519c9c17020b1b6fb84810d25637b1df881ed25c21be1",
         "affectsGlobalScope": false
       },
@@ -537,8 +537,8 @@
         "affectsGlobalScope": false
       },
       "../utils/helper.ts": {
-        "version": "e48a9e49173dcc1bd8420c818773ab152d3a0cad8d0a4f9f4c267aa9bbe2b54a",
-        "signature": "7e75dd15d6831e935cd20f784e37f970a5a173d5b690efb5f9cbb728521a6e6b",
+        "version": "2e84214e6f03572727a6ee043a9312c148915ac0a03bc5d5f2331fef4b267b03",
+        "signature": "5cb6115c14a491139b615a8a9b84854d447173893008933eb418c0620733ce84",
         "affectsGlobalScope": false
       },
       "../node_modules/pg-types/index.d.ts": {
@@ -611,9 +611,14 @@
         "signature": "af86c6366063e83fa98fd4d8f71646914afe91ce7fdc5f46f216f41a344250cb",
         "affectsGlobalScope": false
       },
+      "../node_modules/osm-static-maps/src/lib.d.ts": {
+        "version": "aad952a006a1276c88978a70ba38f6f1643d224778aad5e6250df810b6016f32",
+        "signature": "aad952a006a1276c88978a70ba38f6f1643d224778aad5e6250df810b6016f32",
+        "affectsGlobalScope": false
+      },
       "../utils/dependencyHelper.ts": {
-        "version": "2f09394c781fcdf0f86329b0a037275d5b1c612e09c9815abd1d3dee112ab209",
-        "signature": "6da756be61961fba5c47e13897f4b4d8a30bd412b88ebd26b312d70d87e04a9d",
+        "version": "3af0b579bc424fd102d9be2f49387d9c6e0cd5b0ca4e3cc5e1540fb895c9a629",
+        "signature": "e0fffd123d2356fc254dee1770b45ca0ad4fab95b6a305b3339a348ab8266e1b",
         "affectsGlobalScope": false
       },
       "../utils/dbHelper.ts": {
@@ -627,22 +632,22 @@
         "affectsGlobalScope": false
       },
       "../utils/request.ts": {
-        "version": "c9d5a2d27923484a331c8d78883dcedb207c536d75a2dbfd963059d596310fe1",
+        "version": "42abd119df736dc3bb27df19bfc265edeabcdf379923519cdb04de28df9fe9a4",
         "signature": "afde21a76a7a21c41e6c4f052eb3653b58cde700db64cf40d258a7a3539aed12",
         "affectsGlobalScope": false
       },
       "../utils/index.ts": {
-        "version": "3c5b752242d63bfca5330a138c926923c9afe95631ae23d2409a7de24befa169",
-        "signature": "3d3438ed9fc20bd9ec68985d095676136c1d44e521c657e4ef852b711cf9ad24",
+        "version": "ab295f07117dbb9827b1074a335ca77dab23bcb3c2607136726cdf70b416aa36",
+        "signature": "257eeadb5904d6f2a3162d7266770378f43f0e4fcb91b828ca1d2714efde6849",
         "affectsGlobalScope": false
       },
       "../handler/handlers.ts": {
-        "version": "5b75e6b3272ec8a68833ffb1f4c98a7dce9ca046f2120034252f6f91dbe991a5",
+        "version": "fdd66c92e3ac3a4cd3ab184d817526d9b0286696f6dd3a9d397d438814db317a",
         "signature": "ff7163e46b72f1c3d7212c7899d0ebfc541c808306e4508e982a07381bf0be08",
         "affectsGlobalScope": false
       },
       "../handler/index.ts": {
-        "version": "78adb516bddd183ece4b912bb386484fdee2b2258f8692aca61cd8cd21371061",
+        "version": "fdd8f2afb04aa2ec1a919f852f3c316e073f648b860423a44760573c20c314af",
         "signature": "cc5a36f32e1728f48445b6edb179ab5f5c5858e68a0998057673943331e11a92",
         "affectsGlobalScope": false
       },
@@ -662,9 +667,19 @@
         "affectsGlobalScope": false
       },
       "../types/index.d.ts": {
-        "version": "483dd22df4f59f9e7a8d3fbe86bee4997f23a56f8184d34c2192be61262f6406",
-        "signature": "483dd22df4f59f9e7a8d3fbe86bee4997f23a56f8184d34c2192be61262f6406",
+        "version": "4e2d10cc39cc7eabf494f2b78d02bbeebb4e54ab48f29a869ea35d54730ce03f",
+        "signature": "4e2d10cc39cc7eabf494f2b78d02bbeebb4e54ab48f29a869ea35d54730ce03f",
         "affectsGlobalScope": true
+      },
+      "../node_modules/@types/minimatch/index.d.ts": {
+        "version": "95c22bc19835e28e2e524a4bb8898eb5f2107b640d7279a6d3aade261916bbf2",
+        "signature": "95c22bc19835e28e2e524a4bb8898eb5f2107b640d7279a6d3aade261916bbf2",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/glob/index.d.ts": {
+        "version": "393137c76bd922ba70a2f8bf1ade4f59a16171a02fb25918c168d48875b0cfb0",
+        "signature": "393137c76bd922ba70a2f8bf1ade4f59a16171a02fb25918c168d48875b0cfb0",
+        "affectsGlobalScope": false
       },
       "../node_modules/@types/json-schema/index.d.ts": {
         "version": "3a1e165b22a1cb8df82c44c9a09502fd2b33f160cd277de2cd3a055d8e5c6b27",
@@ -674,6 +689,11 @@
       "../node_modules/@types/json5/index.d.ts": {
         "version": "96d14f21b7652903852eef49379d04dbda28c16ed36468f8c9fa08f7c14c9538",
         "signature": "96d14f21b7652903852eef49379d04dbda28c16ed36468f8c9fa08f7c14c9538",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/yauzl/index.d.ts": {
+        "version": "3845d3b64286c12c60d39fc90ac1cc5e47cbc951530658d2567d578b2faa1f26",
+        "signature": "3845d3b64286c12c60d39fc90ac1cc5e47cbc951530658d2567d578b2faa1f26",
         "affectsGlobalScope": false
       }
     },
@@ -769,6 +789,7 @@
         "../client.ts",
         "../data.ts",
         "../handler/handlers.ts",
+        "../logger.ts",
         "../node_modules/tslib/tslib.d.ts",
         "../utils/index.ts"
       ],
@@ -778,6 +799,7 @@
         "../node_modules/tslib/tslib.d.ts"
       ],
       "../logger.ts": [
+        "../env.ts",
         "../node_modules/tslib/tslib.d.ts",
         "../node_modules/winston/index.d.ts"
       ],
@@ -794,6 +816,11 @@
       ],
       "../node_modules/@types/fs-extra/index.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/index.d.ts"
+      ],
+      "../node_modules/@types/glob/index.d.ts": [
+        "../node_modules/@types/minimatch/index.d.ts",
+        "../node_modules/@types/node/events.d.ts",
         "../node_modules/@types/node/index.d.ts"
       ],
       "../node_modules/@types/node/assert/strict.d.ts": [
@@ -1010,6 +1037,11 @@
         "../node_modules/@types/node/url.d.ts",
         "../node_modules/@types/node/zlib.d.ts"
       ],
+      "../node_modules/@types/yauzl/index.d.ts": [
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/index.d.ts",
+        "../node_modules/@types/node/stream.d.ts"
+      ],
       "../node_modules/discord.js/typings/index.d.ts": [
         "../node_modules/@discordjs/collection/dist/index.d.ts",
         "../node_modules/@types/node/child_process.d.ts",
@@ -1055,6 +1087,8 @@
         "../utils/dependencyHelper.ts"
       ],
       "../utils/dependencyHelper.ts": [
+        "../logger.ts",
+        "../node_modules/osm-static-maps/src/lib.d.ts",
         "../node_modules/quickchart-js/index.d.ts",
         "../node_modules/tslib/tslib.d.ts"
       ],
@@ -1073,6 +1107,7 @@
       "../utils/index.ts": [
         "../node_modules/tslib/tslib.d.ts",
         "../utils/dbHelper.ts",
+        "../utils/dependencyHelper.ts",
         "../utils/discordHelper.ts",
         "../utils/helper.ts",
         "../utils/request.ts"
@@ -1125,6 +1160,11 @@
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/index.d.ts"
       ],
+      "../node_modules/@types/glob/index.d.ts": [
+        "../node_modules/@types/minimatch/index.d.ts",
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/index.d.ts"
+      ],
       "../node_modules/@types/node/assert/strict.d.ts": [
         "../node_modules/@types/node/assert.d.ts"
       ],
@@ -1339,6 +1379,11 @@
         "../node_modules/@types/node/url.d.ts",
         "../node_modules/@types/node/zlib.d.ts"
       ],
+      "../node_modules/@types/yauzl/index.d.ts": [
+        "../node_modules/@types/node/events.d.ts",
+        "../node_modules/@types/node/index.d.ts",
+        "../node_modules/@types/node/stream.d.ts"
+      ],
       "../node_modules/discord.js/typings/index.d.ts": [
         "../node_modules/@discordjs/collection/dist/index.d.ts",
         "../node_modules/@types/node/child_process.d.ts",
@@ -1382,6 +1427,7 @@
       ],
       "../utils/index.ts": [
         "../utils/dbHelper.ts",
+        "../utils/dependencyHelper.ts",
         "../utils/discordHelper.ts",
         "../utils/helper.ts",
         "../utils/request.ts"
@@ -1409,8 +1455,10 @@
       "../node_modules/@discordjs/collection/dist/index.d.ts",
       "../node_modules/@types/chart.js/index.d.ts",
       "../node_modules/@types/fs-extra/index.d.ts",
+      "../node_modules/@types/glob/index.d.ts",
       "../node_modules/@types/json-schema/index.d.ts",
       "../node_modules/@types/json5/index.d.ts",
+      "../node_modules/@types/minimatch/index.d.ts",
       "../node_modules/@types/node/assert.d.ts",
       "../node_modules/@types/node/assert/strict.d.ts",
       "../node_modules/@types/node/async_hooks.d.ts",
@@ -1465,10 +1513,12 @@
       "../node_modules/@types/node/zlib.d.ts",
       "../node_modules/@types/pg/index.d.ts",
       "../node_modules/@types/ws/index.d.ts",
+      "../node_modules/@types/yauzl/index.d.ts",
       "../node_modules/axios/index.d.ts",
       "../node_modules/discord.js/typings/index.d.ts",
       "../node_modules/logform/index.d.ts",
       "../node_modules/moment/ts3.1-typings/moment.d.ts",
+      "../node_modules/osm-static-maps/src/lib.d.ts",
       "../node_modules/pg-protocol/dist/messages.d.ts",
       "../node_modules/pg-types/index.d.ts",
       "../node_modules/quickchart-js/index.d.ts",

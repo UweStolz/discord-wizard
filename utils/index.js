@@ -4,6 +4,7 @@ const tslib_1 = require("tslib");
 const discordHelper_1 = require("./discordHelper");
 const helper_1 = require("./helper");
 const dbHelper_1 = require("./dbHelper");
+const dependencyHelper_1 = require("./dependencyHelper");
 const request_1 = tslib_1.__importDefault(require("./request"));
 const utils = {
     helper: {
@@ -11,6 +12,9 @@ const utils = {
         getHelpMessage: helper_1.getHelpMessage,
         getRandomNumberInRange: helper_1.getRandomNumberInRange,
         getRandomMagicConchAudioFile: helper_1.getRandomMagicConchAudioFile,
+    },
+    dependencyHelper: {
+        buildMap: dependencyHelper_1.buildMap,
     },
     discordHelper: {
         getMemberFromServer: discordHelper_1.getMemberFromServer,

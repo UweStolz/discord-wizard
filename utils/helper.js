@@ -1,10 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRandomMagicConchAudioFile = exports.getRandomNumberInRange = exports.getHelpMessage = void 0;
+exports.rootDir = exports.getRandomMagicConchAudioFile = exports.getRandomNumberInRange = exports.getHelpMessage = void 0;
 const fs_1 = require("fs");
 const path_1 = require("path");
 const data_1 = require("../data");
 const magicConchAudioFiles = [];
+const rootDir = path_1.resolve();
+exports.rootDir = rootDir;
 let helpMessage = '';
 function getHelpMessage() {
     if (helpMessage.length === 0) {
@@ -23,7 +25,6 @@ function getRandomNumberInRange(min, max) {
 exports.getRandomNumberInRange = getRandomNumberInRange;
 function getRandomMagicConchAudioFile() {
     if (magicConchAudioFiles.length === 0) {
-        const rootDir = path_1.resolve();
         const audioFilesDir = `${rootDir}/assets/audio/magicConch`;
         fs_1.readdirSync(audioFilesDir).forEach((path) => {
             magicConchAudioFiles.push(`${audioFilesDir}/${path}`);

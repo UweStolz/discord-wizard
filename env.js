@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.disableInitilizationOfDB = exports.disableDB = exports.commandPrefixAlias = exports.commandPrefix = exports.databaseUrl = exports.serverId = exports.owlBotToken = exports.token = void 0;
+exports.logLevel = exports.disableInitilizationOfDB = exports.disableDB = exports.commandPrefixAlias = exports.commandPrefix = exports.databaseUrl = exports.serverId = exports.owlBotToken = exports.token = void 0;
 require("dotenv/config");
 const token = process.env.TOKEN;
 exports.token = token;
@@ -18,3 +18,5 @@ const disableDB = !!process.env.DISABLE_DB;
 exports.disableDB = disableDB;
 const disableInitilizationOfDB = !!process.env.DISABLE_DB_INITILIZATION;
 exports.disableInitilizationOfDB = disableInitilizationOfDB;
+const logLevel = process.env.LOG_LEVEL;
+exports.logLevel = logLevel;
