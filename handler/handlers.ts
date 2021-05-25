@@ -2,7 +2,7 @@
 import { Discord } from '../client';
 import utils from '../utils';
 import { publicApis, env } from '../data';
-import logger from '../logger';
+import logger, { objLogger } from '../logger';
 
 async function stats(message: Discord.Message): Promise<void> {
   if (!env.disableDB) {
@@ -34,6 +34,53 @@ async function help(message: Discord.Message): Promise<void> {
 
 async function ping(message: Discord.Message): Promise<void> {
   await message.channel.send('pong');
+}
+
+async function iss(message: Discord.Message): Promise<void> {
+  const { iss_position, timestamp } = await utils.helper.request('GET', publicApis.iss, undefined) as IssResponse;
+  if (iss_position) {
+    const { latitude, longitude } = iss_position;
+    const image = await utils.dependencyHelper.buildMap(latitude, longitude, timestamp);
+    if (image) {
+      await message.channel.send({
+        files: [
+          {
+            attachment: image,
+          },
+        ],
+      });
+    }
+  }
+}
+
+async function number(message: Discord.Message, argument: string | null): Promise<void> {
+  let endpoint = '';
+  let url = `${publicApis.number}`;
+  if (argument) {
+    endpoint = utils.helper.getRandomNumberInRange(0, 1) === 0 ? 'math' : 'trivia';
+    let arg: number | string;
+    if (argument === 'random') {
+      url += 'random/';
+    } else {
+      try {
+        arg = parseInt(argument, 10);
+        url += `${arg}/`;
+      } catch {
+        logger.warn(`Could not parse argument: ${argument}`);
+      }
+    }
+  } else {
+    const date = new Date();
+    const day = date.getUTCDate();
+    const month = date.getUTCMonth() + 1;
+    url += `${day}/${month}`;
+    endpoint = '/date';
+  }
+
+  const result = await utils.helper.request('GET', `${url}${endpoint}`, undefined) as string;
+  if (result) {
+    await message.channel.send(`"${result}"`);
+  }
 }
 
 async function cat(message: Discord.Message, argument: string | null): Promise<void> {
@@ -70,8 +117,10 @@ async function insult(message: Discord.Message, argument: string | null = null):
   const allMembers = await utils.discordHelper.getMemberFromServer();
 
   if (insultToMember && allMembers) {
-    const members = allMembers?.filter((m) => (m.displayName !== 'wizard'));
+    const members = allMembers?.filter((m) => (m.displayName !== 'wizard' && m.presence.status !== 'offline'));
     const utf8ConvertedInsult = Buffer.from(insultToMember.insult).toString();
+    logger.verbose(`Insult: ${utf8ConvertedInsult}`);
+    objLogger.debug(members);
 
     let member: Discord.GuildMember;
     if (argument) {
@@ -205,6 +254,8 @@ const handlers: Handlers = {
   bored,
   whatIs,
   conch,
+  number,
+  iss,
   defaultHandler,
 };
 

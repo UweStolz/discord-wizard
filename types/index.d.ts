@@ -1,3 +1,12 @@
+interface IssResponse {
+  'message': 'success';
+  'timestamp': number;
+  'iss_position': {
+    'latitude': number;
+    'longitude': number;
+  }
+}
+
 interface CatPicResponse {
   'file': string;
 }

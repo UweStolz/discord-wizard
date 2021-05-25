@@ -3,6 +3,7 @@ import {
   getHelpMessage, getRandomNumberInRange, getRandomMagicConchAudioFile,
 } from './helper';
 import { getStatistics, updateStatForColumn, createTableIfNotExist } from './dbHelper';
+import { buildMap } from './dependencyHelper';
 import request from './request';
 
 const utils = {
@@ -11,6 +12,9 @@ const utils = {
     getHelpMessage,
     getRandomNumberInRange,
     getRandomMagicConchAudioFile,
+  },
+  dependencyHelper: {
+    buildMap,
   },
   discordHelper: {
     getMemberFromServer,

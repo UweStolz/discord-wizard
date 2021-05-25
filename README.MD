@@ -16,6 +16,8 @@ Just another nonsense discord bot.
 | advice | Display a random advice slip | - |
 | help | Display all available commands | - |
 | xkdc | Get a xkdc comic | [Number] |
+| number | Get trivia for a given number, a random number, or the current date | [random or number] |
+| iss | Show the current location of the ISS | - |
 
 ## Configuration
 
@@ -43,7 +45,14 @@ Either place a `.env` file at root of the project or export the variables direct
   - Explicitly disables the DB
 - DISABLE_DB_INITILIZATION
   - Explicitly disables the initilization of the DB schemata
-
+- LOG_LEVEL
+  - Conform to the severity ordering specified by [RFC5424](https://datatracker.ietf.org/doc/html/rfc5424): severity of all levels is assumed to be numerically ascending from most important to least important.
+  - Sets on of the following log levels:
+    - error: 0
+    - warn: 1
+    - info: 2
+    - verbose: 3
+    - debug: 4
 ## Public APIs
 
 A list of all used public apis can be found in the `publicApis` object [inside](https://github.com/UweStolz/discord-wizard/blob/master/data.ts) of the `data.ts` file.  

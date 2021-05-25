@@ -20,6 +20,7 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
+    camelcase: 'off',
     '@typescript-eslint/ban-ts-ignore': 'off',
     'max-len': [0, { code: 100, ignoreStrings: true }],
     'import/extensions': [

@@ -8,16 +8,19 @@ function getResponseData(response: AxiosResponse<any>): AxiosResponse<any>|null 
   let data: AxiosResponse<any>|null = null;
   if (response?.status === 200) {
     data = response.data;
+    objLogger.verbose(data);
   }
   return data;
 }
 
-async function GET(url: string, options: AxiosRequestConfig | undefined): Promise<any|null> {
+async function GET(url: string, options: AxiosRequestConfig | undefined): Promise<any | null> {
+  logger.info(`Request: ${url}`);
   const response = await axios.get(url, options);
   return getResponseData(response);
 }
 
 async function POST(url: string, options: AxiosRequestConfig | undefined): Promise<any | null> {
+  logger.info(`Request: ${url}`);
   const response = await axios.post(url, options);
   return getResponseData(response);
 }
@@ -38,7 +41,9 @@ export default async function request(type: RequestType, url: string, options: A
     }
   } catch (err) {
     logger.error('An error ocurred while making a request!');
-    objLogger.error(err);
+    logger.error(`CODE: ${err.code}`);
+    logger.error(`MESSAGE: ${err.message}`);
+    objLogger.debug(err);
   }
   return response;
 }
