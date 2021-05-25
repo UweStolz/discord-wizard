@@ -83,6 +83,31 @@ async function number(message: Discord.Message, argument: string | null): Promis
   }
 }
 
+async function satellite(message: Discord.Message, argument: string): Promise<void> {
+  if (argument?.length > 0) {
+    const query = argument.replace(' ', '+');
+    const location = await utils.helper.request(
+      'GET', `https://nominatim.openstreetmap.org/search.php?q=${query}&dedupe=1&limit=1&format=jsonv2`,
+      undefined,
+    ) as NominatimResponse[];
+    let latitude = -1;
+    let longitude = -1;
+    if (location && location.length > 0) {
+      const { lat, lon } = location[0];
+      latitude = parseFloat(lat);
+      longitude = parseFloat(lon);
+
+      // lat latitude (required)
+      // lon longitude (required)
+      // limit number of next passes
+      // days number of days to calculate passes ahead
+      // visible_only can be true/false, filter passes by visible passes only
+      const res = await utils.helper.request('GET', `${publicApis.satellite}/?lat=${latitude}&long=${longitude}&limit=1`, undefined) as SatelliteResponse;
+      // await message.channel.send("");
+    }
+  }
+}
+
 async function cat(message: Discord.Message, argument: string | null): Promise<void> {
   if (argument) {
     if (argument === 'fact') {
@@ -231,6 +256,10 @@ async function xkdc(message: Discord.Message, argument: string | null = null): P
   }
 }
 
+/**
+ * Sends a default message to the incomming channel
+ * @param message @type Discord.Message
+ */
 async function defaultHandler(message: Discord.Message): Promise<void> {
   const prefix = env.commandPrefix || '/wizard';
   const defaultMessage = `Could not find command, use '${prefix} help' to display all available commands.`;
@@ -256,6 +285,7 @@ const handlers: Handlers = {
   conch,
   number,
   iss,
+  satellite,
   defaultHandler,
 };
 

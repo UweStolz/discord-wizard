@@ -15,6 +15,7 @@ const commands = {
   whatIs: '<argument> - Definitions with example sentence and photo if available',
   number: '[random|argument] - Get trivia for a given number, a random number, or the number of the day',
   iss: 'Show the current location of the ISS',
+  satellite: '<location> - Get information if a satellite will pass by, at the given location',
 };
 
 const publicApis = {
@@ -26,6 +27,7 @@ const publicApis = {
   owlbot: 'https://owlbot.info/api/v4/dictionary/',
   number: 'http://numbersapi.com/',
   iss: 'http://api.open-notify.org/iss-now.json',
+  satellite: 'https://satellites.fly.dev/passes',
   xkdc: {
     current: 'http://xkcd.com/info.0.json',
     specific: 'http://xkcd.com/INDEX/info.0.json',
