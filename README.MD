@@ -18,7 +18,6 @@ Just another nonsense discord bot
 | xkdc | Get a xkdc comic | [Number] |
 | number | Get trivia for a given number, a random number, or the current date | [random or number] |
 | iss | Show the current location of the ISS | - |
-| satellite | Get information if a satellite will pass by, at the given location | <location-query> |
 
 ## Configuration
 
