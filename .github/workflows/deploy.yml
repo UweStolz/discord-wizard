@@ -27,7 +27,7 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
-    - run: yarn build
+    - run: yarn build:dev
 
     # Rmove TS for production
     - run: yarn remove typescript
